@@ -18,6 +18,22 @@
     --text-dim: rgba(232,228,221,0.42);
     --accent: #c8a96e;
     --accent-glow: rgba(200,169,110,0.12);
+    --status-online: #4caf82;
+    --status-offline: #e05555;
+    --status-unknown: rgba(232,228,221,0.3);
+  }
+
+  [data-theme="light"] {
+    --bg: #f5f2ed;
+    --bg2: #eae6df;
+    --bg3: #ddd9d2;
+    --border: rgba(0,0,0,0.08);
+    --border-hover: rgba(0,0,0,0.15);
+    --text: #1a1816;
+    --text-muted: rgba(26,24,22,0.6);
+    --text-dim: rgba(26,24,22,0.35);
+    --accent: #9a7b3f;
+    --accent-glow: rgba(154,123,63,0.08);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,9 +46,27 @@
     overflow-x: hidden;
   }
 
+  /* Animated gradient background */
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(200,169,110,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(100,130,180,0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(180,100,130,0.03) 0%, transparent 50%);
+    animation: gradientShift 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    33% { opacity: 0.7; transform: scale(1.05) rotate(1deg); }
+    66% { opacity: 0.9; transform: scale(0.98) rotate(-0.5deg); }
+  }
+
   /* Grain overlay */
-  body::before {
-    content: '';
+  .grain {
     position: fixed;
     inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
@@ -41,9 +75,10 @@
     z-index: 1000;
   }
 
+  [data-theme="light"] .grain { opacity: 0.015; }
+
   /* Vignette */
-  body::after {
-    content: '';
+  .vignette {
     position: fixed;
     inset: 0;
     background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
@@ -51,19 +86,28 @@
     z-index: 999;
   }
 
+  [data-theme="light"] .vignette {
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.12) 100%);
+  }
+
   .container {
     max-width: 960px;
     margin: 0 auto;
     padding: 0 2rem;
+    position: relative;
+    z-index: 1;
   }
 
   /* Header */
   header {
-    padding: 3.5rem 0 2rem;
+    padding: 3.5rem 0 1.5rem;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .header-top {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 2rem;
     flex-wrap: wrap;
@@ -96,6 +140,36 @@
     text-transform: uppercase;
   }
 
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--border-hover);
+    color: var(--text-muted);
+  }
+
   .status-bar {
     display: flex;
     align-items: center;
@@ -109,13 +183,216 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #4caf82;
+    background: var(--status-online);
     animation: pulse 2.5s ease-in-out infinite;
   }
 
   @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
+  }
+
+  /* Greeting bar */
+  .greeting-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.2rem 0;
+  }
+
+  .greeting {
+    font-family: 'Cormorant', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--text-muted);
+  }
+
+  .greeting strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* Weather widget */
+  .weather {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .weather-temp {
+    font-size: 0.85rem;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .weather-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .weather-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .weather-location {
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Search (Cmd+K) */
+  .search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 2.5rem;
+  }
+
+  .search-trigger:hover {
+    border-color: var(--border-hover);
+    background: var(--bg3);
+  }
+
+  .search-trigger kbd {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Search modal */
+  .search-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+  }
+
+  [data-theme="light"] .search-overlay {
+    background: rgba(0,0,0,0.3);
+  }
+
+  .search-overlay.active {
+    display: flex;
+  }
+
+  .search-modal {
+    width: 90%;
+    max-width: 520px;
+    background: var(--bg2);
+    border: 1px solid var(--border-hover);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  }
+
+  .search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-input-wrap span {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  .search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+
+  .search-input::placeholder {
+    color: var(--text-dim);
+  }
+
+  .search-results {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .search-result {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    transition: background 0.15s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .search-result:hover, .search-result.active {
+    background: var(--accent-glow);
+  }
+
+  .search-result-icon {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    width: 1.4rem;
+    text-align: center;
+  }
+
+  .search-result-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    text-align: left;
+  }
+
+  .search-result-name {
+    color: var(--text);
+    font-size: 0.75rem;
+  }
+
+  .search-result-url {
+    color: var(--text-dim);
+    font-size: 0.58rem;
+  }
+
+  .search-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.7rem;
   }
 
   /* Section labels */
@@ -169,11 +446,29 @@
     opacity: 1;
   }
 
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .card-icon {
     font-size: 1.1rem;
-    margin-bottom: 0.25rem;
     opacity: 0.85;
   }
+
+  .card-status {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--status-unknown);
+    margin-left: auto;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .card-status.online { background: var(--status-online); }
+  .card-status.offline { background: var(--status-offline); }
 
   .card-name {
     font-size: 0.85rem;
@@ -213,6 +508,37 @@
     transform: translate(2px, -2px);
   }
 
+  /* Favorite star */
+  .card-fav {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 4px;
+    font-family: inherit;
+  }
+
+  .card:hover .card-fav {
+    opacity: 0.6;
+  }
+
+  .card-fav:hover {
+    opacity: 1 !important;
+    color: var(--accent);
+  }
+
+  .card-fav.is-fav {
+    opacity: 1 !important;
+    color: var(--accent);
+  }
+
   /* Tag badge */
   .card-tag {
     display: inline-block;
@@ -226,10 +552,20 @@
     align-self: flex-start;
   }
 
+  /* Pinned section */
+  .pinned-section {
+    display: none;
+    margin-bottom: 0.5rem;
+  }
+
+  .pinned-section.has-pins {
+    display: block;
+  }
+
   /* Footer */
   footer {
     border-top: 1px solid var(--border);
-    padding: 2rem 0;
+    padding: 2rem 0 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -259,76 +595,138 @@
   }
 
   header { animation: fadeUp 0.5s ease both; }
-  .section:nth-child(1) { animation: fadeUp 0.5s 0.1s ease both; }
-  .section:nth-child(2) { animation: fadeUp 0.5s 0.2s ease both; }
-  .section:nth-child(3) { animation: fadeUp 0.5s 0.3s ease both; }
-  footer { animation: fadeUp 0.5s 0.4s ease both; }
+  .greeting-bar { animation: fadeUp 0.5s 0.05s ease both; }
+  .search-trigger { animation: fadeUp 0.5s 0.1s ease both; }
+  .section:nth-child(1) { animation: fadeUp 0.5s 0.12s ease both; }
+  .section:nth-child(2) { animation: fadeUp 0.5s 0.18s ease both; }
+  .section:nth-child(3) { animation: fadeUp 0.5s 0.24s ease both; }
+  .section:nth-child(4) { animation: fadeUp 0.5s 0.3s ease both; }
+  footer { animation: fadeUp 0.5s 0.35s ease both; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .greeting-bar { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+    .header-top { flex-direction: column; gap: 1rem; }
+    .header-right { align-items: flex-start; }
+    .search-overlay { padding-top: 5vh; }
+  }
 </style>
 </head>
 <body>
+
+<div class="bg-gradient"></div>
+<div class="grain"></div>
+<div class="vignette"></div>
+
 <div class="container">
 
   <header>
-    <div class="wordmark">
-      <h1>cinem<span>anter</span></h1>
-      <div class="tagline">personal infrastructure · mini-von-anter</div>
+    <div class="header-top">
+      <div class="wordmark">
+        <h1>cinem<span>anter</span></h1>
+        <div class="tagline">personal infrastructure · mini-von-anter</div>
+      </div>
+      <div class="header-right">
+        <div class="header-controls">
+          <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+            <span id="theme-icon">light</span>
+          </button>
+          <div class="status-bar">
+            <div class="status-dot"></div>
+            <span id="uptime-label">mac mini online</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="status-bar">
-      <div class="status-dot"></div>
-      <span id="uptime-label">mac mini online</span>
+
+    <div class="greeting-bar">
+      <div class="greeting" id="greeting"></div>
+      <div class="weather" id="weather"></div>
     </div>
   </header>
 
-  <main>
+  <button class="search-trigger" onclick="openSearch()">
+    <span>&#9906;</span>
+    <span>Suche nach Services...</span>
+    <kbd>&#8984;K</kbd>
+  </button>
+
+  <main id="main-content">
+
+    <!-- Pinned / Favorites -->
+    <div class="section pinned-section" id="pinned-section">
+      <div class="section-label">// pinned</div>
+      <div class="grid" id="pinned-grid"></div>
+    </div>
 
     <!-- Media -->
     <div class="section">
       <div class="section-label">// media</div>
       <div class="grid">
 
-        <a class="card" href="https://plex.tv/web" target="_blank">
-          <span class="card-icon">▶</span>
+        <a class="card" href="https://plex.tv/web" target="_blank" data-service="plex" data-name="Plex" data-check="https://plex.tv">
+          <div class="card-header">
+            <span class="card-icon">&#9654;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Plex</div>
           <div class="card-desc">Films, Serien, Musik — alles an einem Ort</div>
           <div class="card-tag">stream</div>
           <div class="card-url">plex.tv</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'plex')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://barroque.cinemanter.com" target="_blank">
-          <span class="card-icon">♩</span>
+        <a class="card" href="https://barroque.cinemanter.com" target="_blank" data-service="barroque" data-name="Barroque" data-check="https://barroque.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#9833;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Barroque</div>
           <div class="card-desc">Klassische Musik Manager — Komponisten, Werke, Aufnahmen</div>
           <div class="card-tag">self-built</div>
           <div class="card-url">barroque.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'barroque')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://hearr.cinemanter.com" target="_blank">
-          <span class="card-icon">◈</span>
+        <a class="card" href="https://hearr.cinemanter.com" target="_blank" data-service="hearr" data-name="Hearr" data-check="https://hearr.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#9672;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Hearr</div>
           <div class="card-desc">Musik-Discography-Manager — Missing Albums, Requests</div>
           <div class="card-tag">self-built</div>
           <div class="card-url">hearr.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'hearr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://obscurr.cinemanter.com" target="_blank">
-          <span class="card-icon">◐</span>
+        <a class="card" href="https://obscurr.cinemanter.com" target="_blank" data-service="obscurr" data-name="Obscurr" data-check="https://obscurr.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#9680;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Obscurr</div>
-          <div class="card-desc">YouTube → Musik-Library · seltene Tracks retten</div>
+          <div class="card-desc">YouTube &rarr; Musik-Library &middot; seltene Tracks retten</div>
           <div class="card-tag">self-built</div>
           <div class="card-url">obscurr.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'obscurr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://audiobookshelf.cinemanter.com" target="_blank">
-          <span class="card-icon">◉</span>
+        <a class="card" href="https://audiobookshelf.cinemanter.com" target="_blank" data-service="audiobookshelf" data-name="Audiobookshelf" data-check="https://audiobookshelf.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#9673;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Audiobookshelf</div>
-          <div class="card-desc">Hörbücher & Podcasts selbst gehostet</div>
+          <div class="card-desc">Hörbücher &amp; Podcasts selbst gehostet</div>
           <div class="card-tag">audio</div>
           <div class="card-url">audiobookshelf.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'audiobookshelf')" title="Pin">&#9734;</button>
         </a>
 
       </div>
@@ -339,45 +737,65 @@
       <div class="section-label">// arr stack</div>
       <div class="grid">
 
-        <a class="card" href="https://overseerr.cinemanter.com" target="_blank">
-          <span class="card-icon">⊕</span>
-          <div class="card-name">Overseerr</div>
-          <div class="card-desc">Film & Serien-Anfragen verwalten</div>
-          <div class="card-url">overseerr.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+        <a class="card" href="https://seerr.cinemanter.com" target="_blank" data-service="seerr" data-name="Seerr" data-check="https://seerr.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#8853;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
+          <div class="card-name">Seerr</div>
+          <div class="card-desc">Film &amp; Serien-Anfragen verwalten</div>
+          <div class="card-url">seerr.cinemanter.com</div>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'seerr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://sonarr.cinemanter.com" target="_blank">
-          <span class="card-icon">⊞</span>
+        <a class="card" href="https://sonarr.cinemanter.com" target="_blank" data-service="sonarr" data-name="Sonarr" data-check="https://sonarr.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#8862;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Sonarr</div>
-          <div class="card-desc">Serien automatisch verfolgen & herunterladen</div>
+          <div class="card-desc">Serien automatisch verfolgen &amp; herunterladen</div>
           <div class="card-url">sonarr.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'sonarr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://radarr.cinemanter.com" target="_blank">
-          <span class="card-icon">⊟</span>
+        <a class="card" href="https://radarr.cinemanter.com" target="_blank" data-service="radarr" data-name="Radarr" data-check="https://radarr.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#8863;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Radarr</div>
-          <div class="card-desc">Filme automatisch verfolgen & herunterladen</div>
+          <div class="card-desc">Filme automatisch verfolgen &amp; herunterladen</div>
           <div class="card-url">radarr.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'radarr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://sab.cinemanter.com" target="_blank">
-          <span class="card-icon">↓</span>
+        <a class="card" href="https://sab.cinemanter.com" target="_blank" data-service="sabnzbd" data-name="SABnzbd" data-check="https://sab.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&darr;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">SABnzbd</div>
           <div class="card-desc">Usenet Download-Client</div>
           <div class="card-url">sab.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'sabnzbd')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://swiparr.cinemanter.com" target="_blank">
-          <span class="card-icon">⇄</span>
+        <a class="card" href="https://swiparr.cinemanter.com" target="_blank" data-service="swiparr" data-name="Swiparr" data-check="https://swiparr.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#8644;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Swiparr</div>
           <div class="card-desc">Tinder für Filme — gemeinsam swipend entscheiden was läuft</div>
           <div class="card-tag">self-built</div>
           <div class="card-url">swiparr.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'swiparr')" title="Pin">&#9734;</button>
         </a>
 
       </div>
@@ -388,28 +806,40 @@
       <div class="section-label">// infrastructure</div>
       <div class="grid">
 
-        <a class="card" href="https://immich.cinemanter.com" target="_blank">
-          <span class="card-icon">◫</span>
+        <a class="card" href="https://immich.cinemanter.com" target="_blank" data-service="immich" data-name="Immich" data-check="https://immich.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#9707;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Immich</div>
-          <div class="card-desc">Fotos & Videos — selbst gehostete Google Photos Alternative</div>
+          <div class="card-desc">Fotos &amp; Videos — selbst gehostete Google Photos Alternative</div>
           <div class="card-url">immich.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'immich')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://portainer.cinemanter.com" target="_blank">
-          <span class="card-icon">⊛</span>
+        <a class="card" href="https://portainer.cinemanter.com" target="_blank" data-service="portainer" data-name="Portainer" data-check="https://portainer.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#8859;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Portainer</div>
           <div class="card-desc">Docker Container-Verwaltung via OrbStack</div>
           <div class="card-url">portainer.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'portainer')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://homeassistant.cinemanter.com" target="_blank">
-          <span class="card-icon">⌂</span>
+        <a class="card" href="https://ha.cinemanter.com" target="_blank" data-service="homeassistant" data-name="Home Assistant" data-check="https://ha.cinemanter.com">
+          <div class="card-header">
+            <span class="card-icon">&#8962;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
           <div class="card-name">Home Assistant</div>
-          <div class="card-desc">Heimautomatisierung · Dreame, Presence, Scripts</div>
-          <div class="card-url">homeassistant.cinemanter.com</div>
-          <span class="card-arrow">↗</span>
+          <div class="card-desc">Heimautomatisierung &middot; Dreame, Presence, Scripts</div>
+          <div class="card-url">ha.cinemanter.com</div>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'homeassistant')" title="Pin">&#9734;</button>
         </a>
 
       </div>
@@ -418,22 +848,284 @@
   </main>
 
   <footer>
-    <span>cinemanter · m4 mac mini</span>
+    <span>cinemanter &middot; m4 mac mini</span>
     <span class="footer-time" id="clock"></span>
   </footer>
 
 </div>
 
+<!-- Search overlay -->
+<div class="search-overlay" id="search-overlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-modal">
+    <div class="search-input-wrap">
+      <span>&#9906;</span>
+      <input class="search-input" id="search-input" type="text" placeholder="Service suchen..." autocomplete="off">
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
 <script>
+  // --- Services registry ---
+  const services = [];
+  document.querySelectorAll('.card[data-service]').forEach(card => {
+    services.push({
+      id: card.dataset.service,
+      name: card.dataset.name,
+      url: card.href,
+      check: card.dataset.check,
+      icon: card.querySelector('.card-icon').innerHTML,
+      el: card
+    });
+  });
+
+  // --- Clock ---
   function updateClock() {
     const now = new Date();
     const h = String(now.getHours()).padStart(2,'0');
     const m = String(now.getMinutes()).padStart(2,'0');
     const s = String(now.getSeconds()).padStart(2,'0');
-    document.getElementById('clock').textContent = h + ':' + m + ':' + s + ' · CH/ZH';
+    document.getElementById('clock').textContent = h + ':' + m + ':' + s + ' · CH/SG';
   }
   updateClock();
   setInterval(updateClock, 1000);
+
+  // --- Greeting ---
+  function updateGreeting() {
+    const h = new Date().getHours();
+    let greet;
+    if (h < 6) greet = 'Gute Nacht';
+    else if (h < 12) greet = 'Guten Morgen';
+    else if (h < 17) greet = 'Guten Nachmittag';
+    else if (h < 22) greet = 'Guten Abend';
+    else greet = 'Gute Nacht';
+    document.getElementById('greeting').innerHTML = greet + ', <strong>Anter</strong>';
+  }
+  updateGreeting();
+  setInterval(updateGreeting, 60000);
+
+  // --- Weather (St. Gallen, Open-Meteo API - no key needed) ---
+  async function loadWeather() {
+    try {
+      const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.4245&longitude=9.3767&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe/Zurich');
+      const data = await res.json();
+      const temp = Math.round(data.current.temperature_2m);
+      const code = data.current.weather_code;
+      const wind = Math.round(data.current.wind_speed_10m);
+
+      const icons = {
+        0:'&#9788;', 1:'&#9788;', 2:'&#9925;', 3:'&#9729;',
+        45:'&#9729;', 48:'&#9729;',
+        51:'&#9730;', 53:'&#9730;', 55:'&#9730;',
+        61:'&#9730;', 63:'&#9748;', 65:'&#9748;',
+        71:'&#10052;', 73:'&#10052;', 75:'&#10052;',
+        80:'&#9748;', 81:'&#9748;', 82:'&#9748;',
+        95:'&#9889;', 96:'&#9889;', 99:'&#9889;'
+      };
+      const descriptions = {
+        0:'Klar', 1:'Überwiegend klar', 2:'Teilweise bewölkt', 3:'Bewölkt',
+        45:'Nebel', 48:'Nebel', 51:'Nieselregen', 53:'Nieselregen', 55:'Nieselregen',
+        61:'Leichter Regen', 63:'Regen', 65:'Starker Regen',
+        71:'Leichter Schnee', 73:'Schnee', 75:'Starker Schnee',
+        80:'Regenschauer', 81:'Regenschauer', 82:'Starker Schauer',
+        95:'Gewitter', 96:'Gewitter', 99:'Gewitter'
+      };
+
+      const icon = icons[code] || '&#9729;';
+      const desc = descriptions[code] || '';
+
+      document.getElementById('weather').innerHTML =
+        '<span class="weather-icon">' + icon + '</span>' +
+        '<span class="weather-temp">' + temp + '°</span>' +
+        '<div class="weather-details">' +
+          '<span>' + desc + ' · ' + wind + ' km/h</span>' +
+          '<span class="weather-location">St. Gallen</span>' +
+        '</div>';
+    } catch(e) {
+      document.getElementById('weather').innerHTML =
+        '<span class="weather-location">wetter nicht verfügbar</span>';
+    }
+  }
+  loadWeather();
+  setInterval(loadWeather, 600000);
+
+  // --- Theme toggle ---
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next === 'dark' ? '' : 'light');
+    if (next === 'dark') html.removeAttribute('data-theme');
+    localStorage.setItem('theme', next);
+    document.getElementById('theme-icon').textContent = next === 'light' ? 'dark' : 'light';
+  }
+
+  (function initTheme() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    if (saved === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.getElementById('theme-icon').textContent = 'dark';
+    }
+  })();
+
+  // --- Search (Cmd+K) ---
+  function openSearch() {
+    document.getElementById('search-overlay').classList.add('active');
+    const input = document.getElementById('search-input');
+    input.value = '';
+    input.focus();
+    renderSearchResults('');
+  }
+
+  function closeSearch() {
+    document.getElementById('search-overlay').classList.remove('active');
+  }
+
+  let activeResultIdx = -1;
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === 'Escape') closeSearch();
+
+    if (document.getElementById('search-overlay').classList.contains('active')) {
+      const results = document.querySelectorAll('.search-result');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeResultIdx = Math.min(activeResultIdx + 1, results.length - 1);
+        results.forEach((r, i) => r.classList.toggle('active', i === activeResultIdx));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeResultIdx = Math.max(activeResultIdx - 1, 0);
+        results.forEach((r, i) => r.classList.toggle('active', i === activeResultIdx));
+      } else if (e.key === 'Enter' && activeResultIdx >= 0 && results[activeResultIdx]) {
+        e.preventDefault();
+        const url = results[activeResultIdx].dataset.url;
+        if (url) window.open(url, '_blank');
+        closeSearch();
+      }
+    }
+  });
+
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    activeResultIdx = -1;
+    renderSearchResults(e.target.value);
+  });
+
+  function renderSearchResults(query) {
+    const container = document.getElementById('search-results');
+    const q = query.toLowerCase().trim();
+    const filtered = q ? services.filter(s =>
+      s.name.toLowerCase().includes(q) || s.id.includes(q) || s.url.toLowerCase().includes(q)
+    ) : services;
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="search-empty">Kein Service gefunden</div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(s =>
+      '<button class="search-result" data-url="' + s.url + '">' +
+        '<span class="search-result-icon">' + s.icon + '</span>' +
+        '<div class="search-result-info">' +
+          '<span class="search-result-name">' + s.name + '</span>' +
+          '<span class="search-result-url">' + s.url.replace('https://','') + '</span>' +
+        '</div>' +
+      '</button>'
+    ).join('');
+
+    container.querySelectorAll('.search-result').forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.open(btn.dataset.url, '_blank');
+        closeSearch();
+      });
+    });
+  }
+
+  // --- Favorites / Pinned ---
+  function getFavs() {
+    try { return JSON.parse(localStorage.getItem('cinemanter-favs') || '[]'); } catch { return []; }
+  }
+
+  function saveFavs(favs) {
+    localStorage.setItem('cinemanter-favs', JSON.stringify(favs));
+  }
+
+  function toggleFav(e, id) {
+    e.preventDefault();
+    e.stopPropagation();
+    let favs = getFavs();
+    if (favs.includes(id)) {
+      favs = favs.filter(f => f !== id);
+    } else {
+      favs.push(id);
+    }
+    saveFavs(favs);
+    renderFavs();
+  }
+
+  function renderFavs() {
+    const favs = getFavs();
+    const section = document.getElementById('pinned-section');
+    const grid = document.getElementById('pinned-grid');
+
+    // Update star icons
+    document.querySelectorAll('.card-fav').forEach(btn => {
+      const card = btn.closest('.card');
+      const id = card.dataset.service;
+      if (favs.includes(id)) {
+        btn.classList.add('is-fav');
+        btn.innerHTML = '&#9733;';
+      } else {
+        btn.classList.remove('is-fav');
+        btn.innerHTML = '&#9734;';
+      }
+    });
+
+    if (favs.length === 0) {
+      section.classList.remove('has-pins');
+      grid.innerHTML = '';
+      return;
+    }
+
+    section.classList.add('has-pins');
+    grid.innerHTML = '';
+
+    favs.forEach(id => {
+      const service = services.find(s => s.id === id);
+      if (!service) return;
+      const clone = service.el.cloneNode(true);
+      clone.querySelector('.card-fav').addEventListener('click', (e) => toggleFav(e, id));
+      grid.appendChild(clone);
+    });
+  }
+
+  renderFavs();
+
+  // --- Status checks ---
+  async function checkServices() {
+    for (const service of services) {
+      const dot = service.el.querySelector('.card-status');
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        await fetch(service.check, { mode: 'no-cors', signal: controller.signal });
+        clearTimeout(timeout);
+        dot.className = 'card-status online';
+        dot.title = 'Online';
+      } catch {
+        dot.className = 'card-status offline';
+        dot.title = 'Offline / Unreachable';
+      }
+    }
+    // Re-render pinned to update their status dots too
+    renderFavs();
+  }
+
+  checkServices();
+  setInterval(checkServices, 60000);
 </script>
 </body>
 </html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cinemanter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Cormorant:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0c;
+    --bg2: #141414;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.15);
+    --text: #e8e4dd;
+    --text-muted: rgba(232,228,221,0.65);
+    --text-dim: rgba(232,228,221,0.42);
+    --accent: #c8a96e;
+    --accent-glow: rgba(200,169,110,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.028;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* Vignette */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Header */
+  header {
+    padding: 3.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .wordmark {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .wordmark h1 {
+    font-family: 'Cormorant', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  .wordmark h1 span {
+    color: var(--accent);
+  }
+
+  .wordmark .tagline {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #4caf82;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Section labels */
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    padding-left: 1px;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 4rem;
+  }
+
+  .card {
+    background: var(--bg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-glow);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .card:hover {
+    background: var(--bg2);
+  }
+
+  .card:hover::after {
+    opacity: 1;
+  }
+
+  .card-icon {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+    opacity: 0.85;
+  }
+
+  .card-name {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  .card-desc {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+  }
+
+  .card-url {
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    margin-top: auto;
+    padding-top: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    font-style: normal;
+  }
+
+  .card:hover .card-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+
+  /* Tag badge */
+  .card-tag {
+    display: inline-block;
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.25);
+    padding: 2px 6px;
+    margin-top: 0.25rem;
+    align-self: flex-start;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer span {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  .footer-time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Subtle divider between sections */
+  .section + .section {
+    margin-top: 0.5rem;
+  }
+
+  /* Fade in animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  header { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(1) { animation: fadeUp 0.5s 0.1s ease both; }
+  .section:nth-child(2) { animation: fadeUp 0.5s 0.2s ease both; }
+  .section:nth-child(3) { animation: fadeUp 0.5s 0.3s ease both; }
+  footer { animation: fadeUp 0.5s 0.4s ease both; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="wordmark">
+      <h1>cinem<span>anter</span></h1>
+      <div class="tagline">personal infrastructure · mini-von-anter</div>
+    </div>
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span id="uptime-label">mac mini online</span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Media -->
+    <div class="section">
+      <div class="section-label">// media</div>
+      <div class="grid">
+
+        <a class="card" href="https://plex.tv/web" target="_blank">
+          <span class="card-icon">▶</span>
+          <div class="card-name">Plex</div>
+          <div class="card-desc">Films, Serien, Musik — alles an einem Ort</div>
+          <div class="card-tag">stream</div>
+          <div class="card-url">plex.tv</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://barroque.cinemanter.com" target="_blank">
+          <span class="card-icon">♩</span>
+          <div class="card-name">Barroque</div>
+          <div class="card-desc">Klassische Musik Manager — Komponisten, Werke, Aufnahmen</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">barroque.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://hearr.cinemanter.com" target="_blank">
+          <span class="card-icon">◈</span>
+          <div class="card-name">Hearr</div>
+          <div class="card-desc">Musik-Discography-Manager — Missing Albums, Requests</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">hearr.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://obscurr.cinemanter.com" target="_blank">
+          <span class="card-icon">◐</span>
+          <div class="card-name">Obscurr</div>
+          <div class="card-desc">YouTube → Musik-Library · seltene Tracks retten</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">obscurr.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://audiobookshelf.cinemanter.com" target="_blank">
+          <span class="card-icon">◉</span>
+          <div class="card-name">Audiobookshelf</div>
+          <div class="card-desc">Hörbücher & Podcasts selbst gehostet</div>
+          <div class="card-tag">audio</div>
+          <div class="card-url">audiobookshelf.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Arr Stack -->
+    <div class="section">
+      <div class="section-label">// arr stack</div>
+      <div class="grid">
+
+        <a class="card" href="https://overseerr.cinemanter.com" target="_blank">
+          <span class="card-icon">⊕</span>
+          <div class="card-name">Overseerr</div>
+          <div class="card-desc">Film & Serien-Anfragen verwalten</div>
+          <div class="card-url">overseerr.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://sonarr.cinemanter.com" target="_blank">
+          <span class="card-icon">⊞</span>
+          <div class="card-name">Sonarr</div>
+          <div class="card-desc">Serien automatisch verfolgen & herunterladen</div>
+          <div class="card-url">sonarr.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://radarr.cinemanter.com" target="_blank">
+          <span class="card-icon">⊟</span>
+          <div class="card-name">Radarr</div>
+          <div class="card-desc">Filme automatisch verfolgen & herunterladen</div>
+          <div class="card-url">radarr.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://sab.cinemanter.com" target="_blank">
+          <span class="card-icon">↓</span>
+          <div class="card-name">SABnzbd</div>
+          <div class="card-desc">Usenet Download-Client</div>
+          <div class="card-url">sab.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://swiparr.cinemanter.com" target="_blank">
+          <span class="card-icon">⇄</span>
+          <div class="card-name">Swiparr</div>
+          <div class="card-desc">Tinder für Filme — gemeinsam swipend entscheiden was läuft</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">swiparr.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Infrastructure -->
+    <div class="section">
+      <div class="section-label">// infrastructure</div>
+      <div class="grid">
+
+        <a class="card" href="https://immich.cinemanter.com" target="_blank">
+          <span class="card-icon">◫</span>
+          <div class="card-name">Immich</div>
+          <div class="card-desc">Fotos & Videos — selbst gehostete Google Photos Alternative</div>
+          <div class="card-url">immich.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://portainer.cinemanter.com" target="_blank">
+          <span class="card-icon">⊛</span>
+          <div class="card-name">Portainer</div>
+          <div class="card-desc">Docker Container-Verwaltung via OrbStack</div>
+          <div class="card-url">portainer.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+        <a class="card" href="https://homeassistant.cinemanter.com" target="_blank">
+          <span class="card-icon">⌂</span>
+          <div class="card-name">Home Assistant</div>
+          <div class="card-desc">Heimautomatisierung · Dreame, Presence, Scripts</div>
+          <div class="card-url">homeassistant.cinemanter.com</div>
+          <span class="card-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>cinemanter · m4 mac mini</span>
+    <span class="footer-time" id="clock"></span>
+  </footer>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = h + ':' + m + ':' + s + ' · CH/ZH';
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

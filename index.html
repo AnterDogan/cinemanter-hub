@@ -566,6 +566,47 @@
     align-self: flex-start;
   }
 
+  /* Admin toggle */
+  .admin-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+  }
+
+  .admin-toggle:hover {
+    border-color: var(--border-hover);
+    color: var(--text-muted);
+  }
+
+  .admin-toggle-icon {
+    font-size: 0.6rem;
+    transition: transform 0.2s ease;
+  }
+
+  .admin-toggle-icon.open {
+    transform: rotate(90deg);
+  }
+
+  .admin-content {
+    display: none;
+  }
+
+  .admin-content.open {
+    display: block;
+  }
+
+  .admin-group {
+    margin-bottom: 1rem;
+  }
+
   /* Pinned section */
   .pinned-section {
     display: none;
@@ -729,45 +770,6 @@
           <button class="card-fav" onclick="toggleFav(event, 'plex')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://barroque.demxane.com" target="_blank" data-service="barroque" data-name="Barroque" data-check="https://barroque.demxane.com">
-          <div class="card-header">
-            <span class="card-icon">&#9833;</span>
-            <div class="card-status" title="checking..."></div>
-          </div>
-          <div class="card-name">Barroque</div>
-          <div class="card-desc">Klassische Musik Manager — Komponisten, Werke, Aufnahmen</div>
-          <div class="card-tag">self-built</div>
-          <div class="card-url">barroque.demxane.com</div>
-          <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'barroque')" title="Pin">&#9734;</button>
-        </a>
-
-        <a class="card" href="https://hearr.demxane.com" target="_blank" data-service="hearr" data-name="Hearr" data-check="https://hearr.demxane.com">
-          <div class="card-header">
-            <span class="card-icon">&#9672;</span>
-            <div class="card-status" title="checking..."></div>
-          </div>
-          <div class="card-name">Hearr</div>
-          <div class="card-desc">Musik-Discography-Manager — Missing Albums, Requests</div>
-          <div class="card-tag">self-built</div>
-          <div class="card-url">hearr.demxane.com</div>
-          <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'hearr')" title="Pin">&#9734;</button>
-        </a>
-
-        <a class="card" href="https://obscurr.demxane.com" target="_blank" data-service="obscurr" data-name="Obscurr" data-check="https://obscurr.demxane.com">
-          <div class="card-header">
-            <span class="card-icon">&#9680;</span>
-            <div class="card-status" title="checking..."></div>
-          </div>
-          <div class="card-name">Obscurr</div>
-          <div class="card-desc">YouTube &rarr; Musik-Library &middot; seltene Tracks retten</div>
-          <div class="card-tag">self-built</div>
-          <div class="card-url">obscurr.demxane.com</div>
-          <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'obscurr')" title="Pin">&#9734;</button>
-        </a>
-
         <a class="card" href="https://audiobookshelf.demxane.com" target="_blank" data-service="audiobookshelf" data-name="Audiobookshelf" data-check="https://audiobookshelf.demxane.com">
           <div class="card-header">
             <span class="card-icon">&#9673;</span>
@@ -781,60 +783,16 @@
           <button class="card-fav" onclick="toggleFav(event, 'audiobookshelf')" title="Pin">&#9734;</button>
         </a>
 
-      </div>
-    </div>
-
-    <!-- Arr Stack -->
-    <div class="section">
-      <div class="section-label">// arr stack</div>
-      <div class="grid">
-
-        <a class="card" href="https://seerr.demxane.com" target="_blank" data-service="seerr" data-name="Seerr" data-check="https://seerr.demxane.com">
+        <a class="card" href="https://immich.demxane.com" target="_blank" data-service="immich" data-name="Immich" data-check="https://immich.demxane.com">
           <div class="card-header">
-            <span class="card-icon">&#8853;</span>
+            <span class="card-icon">&#9707;</span>
             <div class="card-status" title="checking..."></div>
           </div>
-          <div class="card-name">Seerr</div>
-          <div class="card-desc">Film &amp; Serien-Anfragen verwalten</div>
-          <div class="card-url">seerr.demxane.com</div>
+          <div class="card-name">Immich</div>
+          <div class="card-desc">Fotos &amp; Videos — selbst gehostete Google Photos Alternative</div>
+          <div class="card-url">immich.demxane.com</div>
           <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'seerr')" title="Pin">&#9734;</button>
-        </a>
-
-        <a class="card" href="https://sonarr.demxane.com" target="_blank" data-service="sonarr" data-name="Sonarr" data-check="https://sonarr.demxane.com">
-          <div class="card-header">
-            <span class="card-icon">&#8862;</span>
-            <div class="card-status" title="checking..."></div>
-          </div>
-          <div class="card-name">Sonarr</div>
-          <div class="card-desc">Serien automatisch verfolgen &amp; herunterladen</div>
-          <div class="card-url">sonarr.demxane.com</div>
-          <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'sonarr')" title="Pin">&#9734;</button>
-        </a>
-
-        <a class="card" href="https://radarr.demxane.com" target="_blank" data-service="radarr" data-name="Radarr" data-check="https://radarr.demxane.com">
-          <div class="card-header">
-            <span class="card-icon">&#8863;</span>
-            <div class="card-status" title="checking..."></div>
-          </div>
-          <div class="card-name">Radarr</div>
-          <div class="card-desc">Filme automatisch verfolgen &amp; herunterladen</div>
-          <div class="card-url">radarr.demxane.com</div>
-          <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'radarr')" title="Pin">&#9734;</button>
-        </a>
-
-        <a class="card" href="https://sab.demxane.com" target="_blank" data-service="sabnzbd" data-name="SABnzbd" data-check="https://sab.demxane.com">
-          <div class="card-header">
-            <span class="card-icon">&darr;</span>
-            <div class="card-status" title="checking..."></div>
-          </div>
-          <div class="card-name">SABnzbd</div>
-          <div class="card-desc">Usenet Download-Client</div>
-          <div class="card-url">sab.demxane.com</div>
-          <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'sabnzbd')" title="Pin">&#9734;</button>
+          <button class="card-fav" onclick="toggleFav(event, 'immich')" title="Pin">&#9734;</button>
         </a>
 
         <a class="card" href="https://swiparr.demxane.com" target="_blank" data-service="swiparr" data-name="Swiparr" data-check="https://swiparr.demxane.com">
@@ -853,46 +811,146 @@
       </div>
     </div>
 
-    <!-- Infrastructure -->
+    <!-- Requests & Management -->
     <div class="section">
-      <div class="section-label">// infrastructure</div>
+      <div class="section-label">// requests &amp; management</div>
       <div class="grid">
 
-        <a class="card" href="https://immich.demxane.com" target="_blank" data-service="immich" data-name="Immich" data-check="https://immich.demxane.com">
+        <a class="card" href="https://seerr.demxane.com" target="_blank" data-service="seerr" data-name="Seerr" data-check="https://seerr.demxane.com">
           <div class="card-header">
-            <span class="card-icon">&#9707;</span>
+            <span class="card-icon">&#8853;</span>
             <div class="card-status" title="checking..."></div>
           </div>
-          <div class="card-name">Immich</div>
-          <div class="card-desc">Fotos &amp; Videos — selbst gehostete Google Photos Alternative</div>
-          <div class="card-url">immich.demxane.com</div>
+          <div class="card-name">Seerr</div>
+          <div class="card-desc">Film &amp; Serien-Anfragen verwalten</div>
+          <div class="card-url">seerr.demxane.com</div>
           <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'immich')" title="Pin">&#9734;</button>
+          <button class="card-fav" onclick="toggleFav(event, 'seerr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://portainer.demxane.com" target="_blank" data-service="portainer" data-name="Portainer" data-check="https://portainer.demxane.com">
+        <a class="card" href="https://hearr.demxane.com" target="_blank" data-service="hearr" data-name="Hearr" data-check="https://hearr.demxane.com">
           <div class="card-header">
-            <span class="card-icon">&#8859;</span>
+            <span class="card-icon">&#9672;</span>
             <div class="card-status" title="checking..."></div>
           </div>
-          <div class="card-name">Portainer</div>
-          <div class="card-desc">Docker Container-Verwaltung via OrbStack</div>
-          <div class="card-url">portainer.demxane.com</div>
+          <div class="card-name">Hearr</div>
+          <div class="card-desc">Musik-Discography-Manager — Missing Albums, Requests</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">hearr.demxane.com</div>
           <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'portainer')" title="Pin">&#9734;</button>
+          <button class="card-fav" onclick="toggleFav(event, 'hearr')" title="Pin">&#9734;</button>
         </a>
 
-        <a class="card" href="https://ha.demxane.com" target="_blank" data-service="homeassistant" data-name="Home Assistant" data-check="https://ha.demxane.com">
+        <a class="card" href="https://barroque.demxane.com" target="_blank" data-service="barroque" data-name="Barroque" data-check="https://barroque.demxane.com">
           <div class="card-header">
-            <span class="card-icon">&#8962;</span>
+            <span class="card-icon">&#9833;</span>
             <div class="card-status" title="checking..."></div>
           </div>
-          <div class="card-name">Home Assistant</div>
-          <div class="card-desc">Heimautomatisierung &middot; Dreame, Presence, Scripts</div>
-          <div class="card-url">ha.demxane.com</div>
+          <div class="card-name">Barroque</div>
+          <div class="card-desc">Klassische Musik Manager — Komponisten, Werke, Aufnahmen</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">barroque.demxane.com</div>
           <span class="card-arrow">&#8599;</span>
-          <button class="card-fav" onclick="toggleFav(event, 'homeassistant')" title="Pin">&#9734;</button>
+          <button class="card-fav" onclick="toggleFav(event, 'barroque')" title="Pin">&#9734;</button>
         </a>
+
+        <a class="card" href="https://obscurr.demxane.com" target="_blank" data-service="obscurr" data-name="Obscurr" data-check="https://obscurr.demxane.com">
+          <div class="card-header">
+            <span class="card-icon">&#9680;</span>
+            <div class="card-status" title="checking..."></div>
+          </div>
+          <div class="card-name">Obscurr</div>
+          <div class="card-desc">YouTube &rarr; Musik-Library &middot; seltene Tracks retten</div>
+          <div class="card-tag">self-built</div>
+          <div class="card-url">obscurr.demxane.com</div>
+          <span class="card-arrow">&#8599;</span>
+          <button class="card-fav" onclick="toggleFav(event, 'obscurr')" title="Pin">&#9734;</button>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Admin (collapsed) -->
+    <div class="section admin-section">
+      <button class="admin-toggle" onclick="toggleAdmin()">
+        <span class="admin-toggle-icon" id="admin-icon">&#9656;</span>
+        <span class="section-label" style="margin-bottom:0">// admin</span>
+      </button>
+      <div class="admin-content" id="admin-content">
+
+        <div class="admin-group">
+          <div class="section-label">// arr stack</div>
+          <div class="grid">
+
+            <a class="card" href="https://sonarr.demxane.com" target="_blank" data-service="sonarr" data-name="Sonarr" data-check="https://sonarr.demxane.com">
+              <div class="card-header">
+                <span class="card-icon">&#8862;</span>
+                <div class="card-status" title="checking..."></div>
+              </div>
+              <div class="card-name">Sonarr</div>
+              <div class="card-desc">Serien automatisch verfolgen &amp; herunterladen</div>
+              <div class="card-url">sonarr.demxane.com</div>
+              <span class="card-arrow">&#8599;</span>
+              <button class="card-fav" onclick="toggleFav(event, 'sonarr')" title="Pin">&#9734;</button>
+            </a>
+
+            <a class="card" href="https://radarr.demxane.com" target="_blank" data-service="radarr" data-name="Radarr" data-check="https://radarr.demxane.com">
+              <div class="card-header">
+                <span class="card-icon">&#8863;</span>
+                <div class="card-status" title="checking..."></div>
+              </div>
+              <div class="card-name">Radarr</div>
+              <div class="card-desc">Filme automatisch verfolgen &amp; herunterladen</div>
+              <div class="card-url">radarr.demxane.com</div>
+              <span class="card-arrow">&#8599;</span>
+              <button class="card-fav" onclick="toggleFav(event, 'radarr')" title="Pin">&#9734;</button>
+            </a>
+
+            <a class="card" href="https://sab.demxane.com" target="_blank" data-service="sabnzbd" data-name="SABnzbd" data-check="https://sab.demxane.com">
+              <div class="card-header">
+                <span class="card-icon">&darr;</span>
+                <div class="card-status" title="checking..."></div>
+              </div>
+              <div class="card-name">SABnzbd</div>
+              <div class="card-desc">Usenet Download-Client</div>
+              <div class="card-url">sab.demxane.com</div>
+              <span class="card-arrow">&#8599;</span>
+              <button class="card-fav" onclick="toggleFav(event, 'sabnzbd')" title="Pin">&#9734;</button>
+            </a>
+
+          </div>
+        </div>
+
+        <div class="admin-group">
+          <div class="section-label">// infrastructure</div>
+          <div class="grid">
+
+            <a class="card" href="https://portainer.demxane.com" target="_blank" data-service="portainer" data-name="Portainer" data-check="https://portainer.demxane.com">
+              <div class="card-header">
+                <span class="card-icon">&#8859;</span>
+                <div class="card-status" title="checking..."></div>
+              </div>
+              <div class="card-name">Portainer</div>
+              <div class="card-desc">Docker Container-Verwaltung via OrbStack</div>
+              <div class="card-url">portainer.demxane.com</div>
+              <span class="card-arrow">&#8599;</span>
+              <button class="card-fav" onclick="toggleFav(event, 'portainer')" title="Pin">&#9734;</button>
+            </a>
+
+            <a class="card" href="https://ha.demxane.com" target="_blank" data-service="homeassistant" data-name="Home Assistant" data-check="https://ha.demxane.com">
+              <div class="card-header">
+                <span class="card-icon">&#8962;</span>
+                <div class="card-status" title="checking..."></div>
+              </div>
+              <div class="card-name">Home Assistant</div>
+              <div class="card-desc">Heimautomatisierung &middot; Dreame, Presence, Scripts</div>
+              <div class="card-url">ha.demxane.com</div>
+              <span class="card-arrow">&#8599;</span>
+              <button class="card-fav" onclick="toggleFav(event, 'homeassistant')" title="Pin">&#9734;</button>
+            </a>
+
+          </div>
+        </div>
 
       </div>
     </div>
@@ -930,6 +988,22 @@
       el: card
     });
   });
+
+  // --- Admin toggle ---
+  function toggleAdmin() {
+    const content = document.getElementById('admin-content');
+    const icon = document.getElementById('admin-icon');
+    content.classList.toggle('open');
+    icon.classList.toggle('open');
+    localStorage.setItem('demxane-admin', content.classList.contains('open') ? '1' : '0');
+  }
+
+  (function initAdmin() {
+    if (localStorage.getItem('demxane-admin') === '1') {
+      document.getElementById('admin-content').classList.add('open');
+      document.getElementById('admin-icon').classList.add('open');
+    }
+  })();
 
   // --- Clock ---
   function updateClock() {

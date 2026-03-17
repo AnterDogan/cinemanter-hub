@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#1a1816"/>
+      <stop offset="100%" stop-color="#0c0c0c"/>
+    </radialGradient>
+    <radialGradient id="sandglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#c8a96e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Subtle accent glow -->
+  <ellipse cx="600" cy="280" rx="300" ry="200" fill="url(#sandglow)"/>
+
+  <!-- Hourglass -->
+  <g transform="translate(510, 120)">
+    <!-- Frame -->
+    <rect x="0" y="0" width="180" height="16" rx="4" fill="#e8e4dd" opacity="0.9"/>
+    <rect x="0" y="234" width="180" height="16" rx="4" fill="#e8e4dd" opacity="0.9"/>
+    <!-- Glass -->
+    <path d="M15 16 L90 110 L165 16" fill="none" stroke="#e8e4dd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M15 234 L90 140 L165 234" fill="none" stroke="#e8e4dd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <!-- Sand top (little remaining) -->
+    <path d="M45 20 L90 80 L135 20 Z" fill="#c8a96e" opacity="0.2"/>
+    <!-- Sand bottom (accumulated) -->
+    <path d="M35 234 L90 170 L145 234 Z" fill="#c8a96e" opacity="0.85"/>
+    <!-- Sand stream -->
+    <line x1="90" y1="110" x2="90" y2="168" stroke="#c8a96e" stroke-width="2.5" opacity="0.5" stroke-dasharray="6,8"/>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="440" text-anchor="middle" fill="#e8e4dd" font-family="Georgia, 'Times New Roman', serif" font-weight="300" font-style="italic" font-size="72" letter-spacing="-1">
+    dem<tspan fill="#c8a96e">xane</tspan>
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="485" text-anchor="middle" fill="#e8e4dd" font-family="'Courier New', monospace" font-size="16" letter-spacing="6" opacity="0.4">
+    HAUS DER AUGENBLICKE
+  </text>
+
+  <!-- Description -->
+  <text x="600" y="540" text-anchor="middle" fill="#e8e4dd" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="20" opacity="0.5">
+    dem — der moment, der vergeht. xane — das haus, das ihn bewahrt.
+  </text>
+
+  <!-- Border accent line -->
+  <rect x="480" y="505" width="240" height="1" fill="#c8a96e" opacity="0.25"/>
+</svg>

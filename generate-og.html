@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@1,300&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; }
+  .card {
+    width: 1200px;
+    height: 630px;
+    background: radial-gradient(ellipse at 50% 40%, #1a1816, #0c0c0c);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .glow {
+    position: absolute;
+    width: 500px;
+    height: 350px;
+    top: 80px;
+    left: 350px;
+    background: radial-gradient(ellipse, rgba(200,169,110,0.1), transparent);
+    pointer-events: none;
+  }
+  .hourglass { margin-bottom: 30px; }
+  .title {
+    font-family: 'Cormorant', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 72px;
+    color: #e8e4dd;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .title span { color: #c8a96e; }
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    font-size: 14px;
+    color: rgba(232,228,221,0.35);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  .line {
+    width: 200px;
+    height: 1px;
+    background: rgba(200,169,110,0.25);
+    margin-bottom: 25px;
+  }
+  .desc {
+    font-family: 'Cormorant', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: rgba(232,228,221,0.45);
+    max-width: 700px;
+    text-align: center;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="glow"></div>
+
+  <svg class="hourglass" width="100" height="140" viewBox="0 0 180 250" fill="none">
+    <rect x="0" y="0" width="180" height="16" rx="4" fill="#e8e4dd" opacity="0.9"/>
+    <rect x="0" y="234" width="180" height="16" rx="4" fill="#e8e4dd" opacity="0.9"/>
+    <path d="M15 16 L90 110 L165 16" fill="none" stroke="#e8e4dd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M15 234 L90 140 L165 234" fill="none" stroke="#e8e4dd" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M45 20 L90 80 L135 20 Z" fill="#c8a96e" opacity="0.2"/>
+    <path d="M35 234 L90 170 L145 234 Z" fill="#c8a96e" opacity="0.85"/>
+    <line x1="90" y1="110" x2="90" y2="168" stroke="#c8a96e" stroke-width="2.5" opacity="0.5" stroke-dasharray="6,8"/>
+  </svg>
+
+  <div class="title">dem<span>xane</span></div>
+  <div class="subtitle">haus der augenblicke</div>
+  <div class="line"></div>
+  <div class="desc">dem — der moment, der vergeht.<br>xane — das haus, das ihn bewahrt.</div>
+</div>
+</body>
+</html>

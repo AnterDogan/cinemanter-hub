@@ -22,6 +22,10 @@
 
 <meta name="description" content="demxane — haus der zeit. dem — der moment, der vergeht. xane — das haus, das ihn bewahrt.">
 <meta name="theme-color" content="#0c0c0c">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon.svg">
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='6' width='36' height='4' rx='1.5' fill='%23e8e4dd'/%3E%3Crect x='14' y='54' width='36' height='4' rx='1.5' fill='%23e8e4dd'/%3E%3Cpath d='M18 10 L32 30 L46 10' fill='none' stroke='%23e8e4dd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 54 L32 34 L46 54' fill='none' stroke='%23e8e4dd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 12 L32 26 L42 12 Z' fill='%23c8a96e' opacity='0.3'/%3E%3Cpath d='M26 54 L32 44 L38 54 Z' fill='%23c8a96e'/%3E%3Ccircle cx='32' cy='33' r='1.5' fill='%23c8a96e'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -341,6 +345,7 @@
     background: var(--bg2);
     border: 1px solid var(--border-hover);
     box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    position: relative;
   }
 
   .search-input-wrap {
@@ -677,12 +682,115 @@
   .section:nth-child(4) { animation: fadeUp 0.5s 0.3s ease both; }
   footer { animation: fadeUp 0.5s 0.35s ease both; }
 
+  /* Uptime dots */
+  .uptime-dots {
+    display: flex;
+    gap: 2px;
+    margin-top: 0.35rem;
+  }
+
+  .uptime-dot {
+    flex: 1;
+    height: 3px;
+    border-radius: 1px;
+    min-width: 2px;
+  }
+
+  .uptime-dot.unknown { background: var(--status-unknown); opacity: 0.2; }
+  .uptime-dot.up { background: var(--status-online); opacity: 0.5; }
+  .uptime-dot.down { background: var(--status-offline); opacity: 0.85; }
+
+  /* Command palette hints */
+  .search-hints {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    flex-wrap: wrap;
+  }
+
+  .search-hints kbd {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    border: 1px solid var(--border);
+    padding: 1px 4px;
+    margin-right: 3px;
+    color: var(--text-muted);
+  }
+
+  .search-result-pin {
+    margin-left: auto;
+    color: var(--accent);
+    font-size: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .search-toast {
+    position: absolute;
+    bottom: 3.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 4px 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .search-toast.visible { opacity: 1; }
+
+  /* Footer stats */
+  .footer-stats {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+  }
+
   /* Responsive */
   @media (max-width: 600px) {
-    .greeting-bar { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
-    .header-top { flex-direction: column; gap: 1rem; }
-    .header-right { align-items: flex-start; }
+    .container { padding: 0 1.5rem; }
+    header { padding: 2.5rem 0 1rem; margin-bottom: 1rem; }
+
+    .header-top {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .wordmark h1 { font-size: 1.8rem; }
+    .wordmark .tagline { display: none; }
+    .hourglass-icon { width: 1.5rem; }
+
+    .header-right { align-items: flex-end; }
+    .status-bar span { display: none; }
+
+    .greeting-bar {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.7rem 0;
+    }
+
+    .greeting { font-size: 1.05rem; }
+    .weather-temp { font-size: 0.8rem; }
+    .weather-icon { font-size: 0.9rem; }
+    .weather-details span { font-size: 0.58rem; }
+    .weather-location { display: none; }
+
+    .search-trigger { margin-bottom: 1.5rem; }
     .search-overlay { padding-top: 5vh; }
+    .search-hints { gap: 0.6rem; }
   }
 </style>
 </head>
@@ -978,6 +1086,7 @@
 
   <footer>
     <span>demxane &middot; m4 mac mini</span>
+    <span class="footer-stats" id="footer-stats"></span>
     <span class="footer-time" id="clock"></span>
   </footer>
 
@@ -991,6 +1100,13 @@
       <input class="search-input" id="search-input" type="text" placeholder="Service suchen..." autocomplete="off">
     </div>
     <div class="search-results" id="search-results"></div>
+    <div class="search-hints">
+      <span><kbd>↑↓</kbd> navigieren</span>
+      <span><kbd>↵</kbd> öffnen</span>
+      <span><kbd>⌘↵</kbd> url kopieren</span>
+      <span><kbd>tab</kbd> pin/unpin</span>
+      <span><kbd>esc</kbd> schliessen</span>
+    </div>
   </div>
 </div>
 
@@ -1169,8 +1285,37 @@
       } else if (e.key === 'Enter' && activeResultIdx >= 0 && results[activeResultIdx]) {
         e.preventDefault();
         const url = results[activeResultIdx].dataset.url;
-        if (url) window.open(url, '_blank');
-        closeSearch();
+        if (e.metaKey || e.ctrlKey) {
+          // Cmd+Enter: copy URL
+          navigator.clipboard.writeText(url).then(() => showSearchToast('URL kopiert'));
+        } else {
+          // Enter: open
+          if (url) window.open(url, '_blank');
+          closeSearch();
+        }
+      } else if (e.key === 'Tab' && activeResultIdx >= 0 && results[activeResultIdx]) {
+        e.preventDefault();
+        const id = results[activeResultIdx].dataset.id;
+        if (id) {
+          let favs = getFavs();
+          const wasPinned = favs.includes(id);
+          if (wasPinned) {
+            favs = favs.filter(f => f !== id);
+          } else {
+            favs.push(id);
+          }
+          saveFavs(favs);
+          renderFavs();
+          renderUptimeDots();
+          updateFooterStats();
+          showSearchToast(wasPinned ? 'Unpinned' : 'Pinned');
+          // Re-render results preserving selection
+          renderSearchResults(document.getElementById('search-input').value);
+          const newResults = document.querySelectorAll('.search-result');
+          if (activeResultIdx < newResults.length) {
+            newResults[activeResultIdx].classList.add('active');
+          }
+        }
       }
     }
   });
@@ -1183,6 +1328,7 @@
   function renderSearchResults(query) {
     const container = document.getElementById('search-results');
     const q = query.toLowerCase().trim();
+    const favs = getFavs();
     const filtered = q ? services.filter(s =>
       s.name.toLowerCase().includes(q) || s.id.includes(q) || s.url.toLowerCase().includes(q)
     ) : services;
@@ -1192,15 +1338,17 @@
       return;
     }
 
-    container.innerHTML = filtered.map(s =>
-      '<button class="search-result" data-url="' + s.url + '">' +
+    container.innerHTML = filtered.map(s => {
+      const pinned = favs.includes(s.id);
+      return '<button class="search-result" data-url="' + s.url + '" data-id="' + s.id + '">' +
         '<span class="search-result-icon">' + s.icon + '</span>' +
         '<div class="search-result-info">' +
           '<span class="search-result-name">' + s.name + '</span>' +
           '<span class="search-result-url">' + s.url.replace('https://','') + '</span>' +
         '</div>' +
-      '</button>'
-    ).join('');
+        (pinned ? '<span class="search-result-pin">&#9733;</span>' : '') +
+      '</button>';
+    }).join('');
 
     container.querySelectorAll('.search-result').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1208,6 +1356,20 @@
         closeSearch();
       });
     });
+  }
+
+  function showSearchToast(msg) {
+    const modal = document.querySelector('.search-modal');
+    let toast = modal.querySelector('.search-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'search-toast';
+      modal.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('visible'), 1200);
   }
 
   // --- Favorites / Pinned ---
@@ -1230,6 +1392,8 @@
     }
     saveFavs(favs);
     renderFavs();
+    renderUptimeDots();
+    updateFooterStats();
   }
 
   function renderFavs() {
@@ -1270,10 +1434,87 @@
 
   renderFavs();
 
+  // --- Uptime history ---
+  function getUptimeData() {
+    try { return JSON.parse(localStorage.getItem('demxane-uptime') || '{}'); } catch { return {}; }
+  }
+
+  function saveUptimeData(data) {
+    localStorage.setItem('demxane-uptime', JSON.stringify(data));
+  }
+
+  function recordUptime(serviceId, online) {
+    const data = getUptimeData();
+    const hourMs = 3600000;
+    const currentSlot = Math.floor(Date.now() / hourMs);
+
+    if (!data[serviceId]) data[serviceId] = [];
+    const entries = data[serviceId];
+    const lastEntry = entries[entries.length - 1];
+
+    if (lastEntry && lastEntry.t === currentSlot) {
+      if (!online) lastEntry.s = 0;
+    } else {
+      entries.push({ t: currentSlot, s: online ? 1 : 0 });
+    }
+
+    // Keep only last 24 slots
+    const cutoff = currentSlot - 24;
+    data[serviceId] = entries.filter(e => e.t > cutoff);
+    saveUptimeData(data);
+  }
+
+  function renderUptimeDots() {
+    const data = getUptimeData();
+    const hourMs = 3600000;
+    const currentSlot = Math.floor(Date.now() / hourMs);
+
+    document.querySelectorAll('.card[data-service]').forEach(card => {
+      const serviceId = card.dataset.service;
+      let dotsContainer = card.querySelector('.uptime-dots');
+      if (!dotsContainer) {
+        dotsContainer = document.createElement('div');
+        dotsContainer.className = 'uptime-dots';
+        const urlEl = card.querySelector('.card-url');
+        if (urlEl) card.insertBefore(dotsContainer, urlEl);
+        else card.appendChild(dotsContainer);
+      }
+
+      const entries = data[serviceId] || [];
+      const entryMap = {};
+      entries.forEach(e => entryMap[e.t] = e.s);
+
+      let html = '';
+      for (let i = 0; i < 24; i++) {
+        const slot = currentSlot - 23 + i;
+        const status = entryMap[slot];
+        const cls = status === undefined ? 'unknown' : (status ? 'up' : 'down');
+        const label = i === 23 ? 'jetzt' : (23 - i) + 'h';
+        html += '<span class="uptime-dot ' + cls + '" title="' + label + '"></span>';
+      }
+      dotsContainer.innerHTML = html;
+    });
+  }
+
+  // --- Footer stats ---
+  function updateFooterStats() {
+    const onlineCount = document.querySelectorAll('.card[data-service] .card-status.online').length;
+    // Count unique services (not pinned clones)
+    const uniqueServices = new Set();
+    document.querySelectorAll('.card[data-service]').forEach(c => uniqueServices.add(c.dataset.service));
+    const totalCount = uniqueServices.size;
+    const pinnedCount = getFavs().length;
+    const el = document.getElementById('footer-stats');
+    if (el) {
+      el.textContent = onlineCount + '/' + totalCount + ' online · ' + pinnedCount + ' pinned';
+    }
+  }
+
   // --- Status checks ---
   async function checkServices() {
     for (const service of services) {
       const dot = service.el.querySelector('.card-status');
+      let online = false;
       try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 5000);
@@ -1281,17 +1522,27 @@
         clearTimeout(timeout);
         dot.className = 'card-status online';
         dot.title = 'Online';
+        online = true;
       } catch {
         dot.className = 'card-status offline';
         dot.title = 'Offline / Unreachable';
       }
+      recordUptime(service.id, online);
     }
-    // Re-render pinned to update their status dots too
     renderFavs();
+    renderUptimeDots();
+    updateFooterStats();
   }
 
+  renderUptimeDots();
+  updateFooterStats();
   checkServices();
   setInterval(checkServices, 60000);
+
+  // --- PWA: Service Worker ---
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
 </script>
 </body>
 </html>

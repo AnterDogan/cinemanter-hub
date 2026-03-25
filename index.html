@@ -1434,38 +1434,10 @@
 
   renderFavs();
 
-  // --- Uptime history ---
-  function getUptimeData() {
-    try { return JSON.parse(localStorage.getItem('demxane-uptime') || '{}'); } catch { return {}; }
-  }
+  // --- Uptime history (server-side via uptime.json) ---
+  let uptimeCache = {};
 
-  function saveUptimeData(data) {
-    localStorage.setItem('demxane-uptime', JSON.stringify(data));
-  }
-
-  function recordUptime(serviceId, online) {
-    const data = getUptimeData();
-    const hourMs = 3600000;
-    const currentSlot = Math.floor(Date.now() / hourMs);
-
-    if (!data[serviceId]) data[serviceId] = [];
-    const entries = data[serviceId];
-    const lastEntry = entries[entries.length - 1];
-
-    if (lastEntry && lastEntry.t === currentSlot) {
-      if (!online) lastEntry.s = 0;
-    } else {
-      entries.push({ t: currentSlot, s: online ? 1 : 0 });
-    }
-
-    // Keep only last 24 slots
-    const cutoff = currentSlot - 24;
-    data[serviceId] = entries.filter(e => e.t > cutoff);
-    saveUptimeData(data);
-  }
-
-  function renderUptimeDots() {
-    const data = getUptimeData();
+  function renderUptimeDots(data) {
     const hourMs = 3600000;
     const currentSlot = Math.floor(Date.now() / hourMs);
 
@@ -1480,7 +1452,7 @@
         else card.appendChild(dotsContainer);
       }
 
-      const entries = data[serviceId] || [];
+      const entries = (data[serviceId] && data[serviceId].history) || [];
       const entryMap = {};
       entries.forEach(e => entryMap[e.t] = e.s);
 
@@ -1499,7 +1471,6 @@
   // --- Footer stats ---
   function updateFooterStats() {
     const onlineCount = document.querySelectorAll('.card[data-service] .card-status.online').length;
-    // Count unique services (not pinned clones)
     const uniqueServices = new Set();
     document.querySelectorAll('.card[data-service]').forEach(c => uniqueServices.add(c.dataset.service));
     const totalCount = uniqueServices.size;
@@ -1510,31 +1481,32 @@
     }
   }
 
-  // --- Status checks ---
+  // --- Status checks (from server-side monitor) ---
   async function checkServices() {
+    try {
+      const res = await fetch('/uptime.json?t=' + Date.now());
+      if (!res.ok) throw new Error('fetch failed');
+      uptimeCache = await res.json();
+    } catch {
+      // Fallback: keep last cached data
+    }
+
+    // Update status dots from server data
     for (const service of services) {
       const dot = service.el.querySelector('.card-status');
-      let online = false;
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
-        await fetch(service.check, { mode: 'no-cors', signal: controller.signal });
-        clearTimeout(timeout);
-        dot.className = 'card-status online';
-        dot.title = 'Online';
-        online = true;
-      } catch {
-        dot.className = 'card-status offline';
-        dot.title = 'Offline / Unreachable';
+      const svc = uptimeCache[service.id];
+      if (svc) {
+        dot.className = 'card-status ' + (svc.online ? 'online' : 'offline');
+        dot.title = svc.online ? 'Online' : 'Offline / Unreachable';
       }
-      recordUptime(service.id, online);
     }
+
     renderFavs();
-    renderUptimeDots();
+    renderUptimeDots(uptimeCache);
     updateFooterStats();
   }
 
-  renderUptimeDots();
+  renderUptimeDots(uptimeCache);
   updateFooterStats();
   checkServices();
   setInterval(checkServices, 60000);

@@ -147,6 +147,7 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    overflow: visible;
   }
 
   .hourglass-icon {
@@ -155,6 +156,7 @@
     aspect-ratio: 40 / 56;
     flex-shrink: 0;
     filter: drop-shadow(0 0 8px rgba(200,169,110,0.15));
+    overflow: visible;
   }
 
   .wordmark h1 {
@@ -1596,14 +1598,13 @@
         const ft = (now - flipT0) / 1000;
         if (ft >= FLIP_DUR) {
           flipping = false;
+          canvas.style.transform = '';
           settled = 0; grains = []; nextGrainTime = 0;
           t0 = now; prevTime = now;
         } else {
           const t = ft / FLIP_DUR;
           const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2) / 2;
-          ctx.translate(canvas.width/2, canvas.height/2);
-          ctx.rotate(ease * Math.PI);
-          ctx.translate(-canvas.width/2, -canvas.height/2);
+          canvas.style.transform = 'rotate(' + (ease * 180) + 'deg)';
         }
       }
 

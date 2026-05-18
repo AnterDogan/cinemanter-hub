@@ -19,6 +19,7 @@ const SERVICES = [
   { id: 'radarr', check: 'https://radarr.demxane.com' },
   { id: 'sabnzbd', check: 'https://sab.demxane.com' },
   { id: 'portainer', check: 'https://portainer.demxane.com' },
+  { id: 'crafty', check: 'https://minecraft.demxane.com' },
   { id: 'homeassistant', check: 'https://ha.demxane.com' },
 ];
 

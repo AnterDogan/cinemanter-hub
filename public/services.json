@@ -1,0 +1,35 @@
+{
+  "groups": [
+    { "id": "alltag", "label": "alltag", "open": true },
+    { "id": "apps", "label": "eigene apps", "open": true },
+    { "id": "verwaltung", "label": "verwaltung", "open": false }
+  ],
+  "services": [
+    { "id": "plex", "name": "Plex", "url": "https://app.plex.tv", "desc": "Filme, Serien, Musik", "group": "alltag", "icon": "▶", "host": "mini", "check": "plex" },
+    { "id": "immich", "name": "Immich", "url": "https://immich.demxane.com", "desc": "Fotos & Videos, unsere eigene Foto-Cloud", "group": "alltag", "icon": "◫", "host": "mini" },
+    { "id": "audiobookshelf", "name": "Audiobookshelf", "url": "https://audiobookshelf.demxane.com", "desc": "Hörbücher & Podcasts", "group": "alltag", "icon": "◉", "host": "mini" },
+    { "id": "seerr", "name": "Seerr", "url": "https://seerr.demxane.com", "desc": "Filme & Serien wünschen", "group": "alltag", "icon": "⊕", "host": "mini" },
+    { "id": "swiparr", "name": "Swiparr", "url": "https://swiparr.demxane.com", "desc": "Tinder für Filme, gemeinsam entscheiden was läuft", "group": "alltag", "icon": "⇄", "host": "mini", "tag": "self-built" },
+    { "id": "drop", "name": "Drop", "url": "https://drop.demxane.com", "desc": "Dateien ablegen & teilen", "group": "alltag", "icon": "⇩", "host": "mini", "tag": "self-built" },
+    { "id": "books", "name": "Shelfmark", "url": "https://books.demxane.com", "desc": "E-Books suchen & in die Bibliothek laden", "group": "alltag", "icon": "▤", "host": "mini" },
+    { "id": "kobo", "name": "Send to Kobo", "url": "https://kobo.demxane.com", "desc": "E-Books an den Kobo schicken", "group": "alltag", "icon": "⇥", "host": "mini", "tag": "self-built" },
+    { "id": "homeassistant", "name": "Home Assistant", "url": "https://ha.demxane.com", "desc": "Heimautomatisierung · Dreame, Presence, Scripts", "group": "alltag", "icon": "⌂", "host": "cloud" },
+
+    { "id": "hearr", "name": "Hearr", "url": "https://hearr.demxane.com", "desc": "Musikbibliothek prüfen, fehlende Alben finden", "group": "apps", "icon": "◨", "host": "mini", "tag": "self-built" },
+    { "id": "barroque", "name": "Barroque", "url": "https://barroque.demxane.com", "desc": "Klassik: Komponisten, Werke, Aufnahmen", "group": "apps", "icon": "♩", "host": "mini", "tag": "self-built" },
+    { "id": "obscurr", "name": "Obscurr", "url": "https://obscurr.demxane.com", "desc": "YouTube-Funde in die Musik-Library retten", "group": "apps", "icon": "◐", "host": "mini", "tag": "self-built" },
+    { "id": "habich", "name": "Hab ich...?", "url": "https://habich.demxane.com", "desc": "Barcode scannen, sofort wissen ob du's hast", "group": "apps", "icon": "☐", "host": "cloud", "tag": "self-built" },
+    { "id": "grillfest", "name": "Grillfest 2026", "url": "https://grillfest.demxane.com", "desc": "Einladung & Anmeldung zum Grillfest", "group": "apps", "icon": "♨", "host": "cloud", "tag": "self-built" },
+    { "id": "todo", "name": "PackMate", "url": "https://todo.demxane.com", "desc": "Packlisten & To-dos", "group": "apps", "icon": "☑", "host": "cloud", "tag": "self-built" },
+    { "id": "ichbringe", "name": "Ich bringe", "url": "https://ichbringe.demxane.com", "desc": "Wer bringt was mit? Listen für Feste", "group": "apps", "icon": "✦", "host": "cloud", "tag": "self-built" },
+    { "id": "teacherr", "name": "Teacherr", "url": "https://teacherr.demxane.com", "desc": "Schülerabgaben im Blick", "group": "apps", "icon": "✎", "host": "cloud", "tag": "self-built" },
+
+    { "id": "radarr", "name": "Radarr", "url": "https://radarr.demxane.com", "desc": "Filme automatisch verfolgen & laden", "group": "verwaltung", "icon": "⊟", "host": "mini" },
+    { "id": "sonarr", "name": "Sonarr", "url": "https://sonarr.demxane.com", "desc": "Serien automatisch verfolgen & laden", "group": "verwaltung", "icon": "⊞", "host": "mini" },
+    { "id": "prowlarr", "name": "Prowlarr", "url": "https://prowlarr.demxane.com", "desc": "Indexer für Radarr & Sonarr", "group": "verwaltung", "icon": "◎", "host": "mini" },
+    { "id": "bazarr", "name": "Bazarr", "url": "https://bazarr.demxane.com", "desc": "Untertitel automatisch holen", "group": "verwaltung", "icon": "≡", "host": "mini" },
+    { "id": "sabnzbd", "name": "SABnzbd", "url": "https://sab.demxane.com", "desc": "Usenet Download-Client", "group": "verwaltung", "icon": "↓", "host": "mini" },
+    { "id": "portainer", "name": "Portainer", "url": "https://portainer.demxane.com", "desc": "Docker-Container verwalten", "group": "verwaltung", "icon": "⊛", "host": "mini" },
+    { "id": "minecraft", "name": "Minecraft", "url": "https://minecraft.demxane.com", "desc": "Server-Verwaltung via Crafty", "group": "verwaltung", "icon": "▒", "host": "mini" }
+  ]
+}

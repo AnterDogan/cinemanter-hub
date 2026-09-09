@@ -1,0 +1,12 @@
+name = "cinemanter-hub"
+compatibility_date = "2026-03-17"
+pages_build_output_dir = "public"
+
+# Geheimnisse (nicht hier, sondern per `wrangler pages secret put <NAME> --project-name cinemanter-hub`):
+#   PUSH_TOKEN  – Schlüssel, mit dem der Mini seine Auslastung an /api/push schickt
+#   PLEX_TOKEN  – Plex-Konto-Token, um über plex.tv zu sehen ob der Server online ist
+
+[[d1_databases]]
+binding = "DB"
+database_name = "demxane-status"
+database_id = "c16974df-83b7-49cd-a9ba-cff219e01971"

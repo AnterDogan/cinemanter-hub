@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>demxane — haus der zeit</title>
+
+<meta property="og:url" content="https://demxane.com">
+<meta property="og:type" content="website">
+<meta property="og:title" content="demxane">
+<meta property="og:description" content="dem — der moment, der vergeht. xane — das haus, das ihn bewahrt.">
+<meta property="og:image" content="https://demxane.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="demxane">
+<meta name="twitter:description" content="dem — der moment, der vergeht. xane — das haus, das ihn bewahrt.">
+<meta name="twitter:image" content="https://demxane.com/og-image.jpg">
+<meta name="description" content="demxane — haus der zeit. dem — der moment, der vergeht. xane — das haus, das ihn bewahrt.">
+<meta name="theme-color" content="#0c0c0c">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='6' width='36' height='4' rx='1.5' fill='%23e8e4dd'/%3E%3Crect x='14' y='54' width='36' height='4' rx='1.5' fill='%23e8e4dd'/%3E%3Cpath d='M18 10 L32 30 L46 10' fill='none' stroke='%23e8e4dd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 54 L32 34 L46 54' fill='none' stroke='%23e8e4dd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 12 L32 26 L42 12 Z' fill='%23c8a96e' opacity='0.3'/%3E%3Cpath d='M26 54 L32 44 L38 54 Z' fill='%23c8a96e'/%3E%3Ccircle cx='32' cy='33' r='1.5' fill='%23c8a96e'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Cormorant:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0c;
+    --bg2: #141414;
+    --bg3: #1a1a1a;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.15);
+    --text: #e8e4dd;
+    --text-muted: rgba(232,228,221,0.65);
+    --text-dim: rgba(232,228,221,0.42);
+    --accent: #c8a96e;
+    --accent-glow: rgba(200,169,110,0.12);
+    --status-online: #4caf82;
+    --status-warn: #d9a441;
+    --status-offline: #e05555;
+    --status-unknown: rgba(232,228,221,0.3);
+  }
+
+  [data-theme="light"] {
+    --bg: #f5f2ed;
+    --bg2: #eae6df;
+    --bg3: #ddd9d2;
+    --border: rgba(0,0,0,0.08);
+    --border-hover: rgba(0,0,0,0.15);
+    --text: #1a1816;
+    --text-muted: rgba(26,24,22,0.6);
+    --text-dim: rgba(26,24,22,0.35);
+    --accent: #9a7b3f;
+    --accent-glow: rgba(154,123,63,0.08);
+    --status-unknown: rgba(26,24,22,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  /* Header */
+  header {
+    padding: 3.5rem 0 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .wordmark { display: flex; flex-direction: column; gap: 0.2rem; text-decoration: none; color: inherit; }
+  .wordmark-row { display: flex; align-items: center; gap: 0.6rem; overflow: visible; }
+
+  .hourglass-icon {
+    width: clamp(1.8rem, 4vw, 2.8rem);
+    height: auto;
+    aspect-ratio: 40 / 56;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(200,169,110,0.15));
+    overflow: visible;
+  }
+
+  .wordmark h1 {
+    font-family: 'Cormorant', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .wordmark h1 span { color: var(--accent); }
+
+  .wordmark .tagline {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; }
+  .header-controls { display: flex; align-items: center; gap: 0.75rem; }
+
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--text-muted); }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--status-unknown);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  .status-dot.online { background: var(--status-online); }
+  .status-dot.offline { background: var(--status-offline); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Greeting bar */
+  .greeting-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.2rem 0;
+  }
+
+  .greeting {
+    font-family: 'Cormorant', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.35rem;
+    color: var(--text-muted);
+  }
+  .greeting strong { color: var(--text); font-weight: 400; }
+
+  .weather { display: flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; }
+  .weather-temp { font-size: 0.95rem; color: var(--text); font-variant-numeric: tabular-nums; }
+  .weather-icon { font-size: 1.1rem; line-height: 1; }
+  .weather-details { display: flex; flex-direction: column; gap: 0.1rem; }
+  .weather-location { font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* Mac Mini panel */
+  .host {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 1rem 1.25rem 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .host-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.9rem;
+  }
+
+  .host-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .host-meta {
+    display: flex;
+    gap: 0.4rem 1.2rem;
+    flex-wrap: wrap;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+  .host-meta b { color: var(--text); font-weight: 400; }
+
+  .host-empty { font-size: 0.72rem; color: var(--text-dim); letter-spacing: 0.08em; }
+
+  .meters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.9rem 1.4rem;
+  }
+
+  .meter-top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--text-muted); }
+  .meter-value { color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .meter-bar { height: 3px; background: var(--border-hover); margin-top: 0.4rem; overflow: hidden; }
+  .meter-fill { height: 100%; width: 0; background: var(--accent); transition: width 0.5s ease; }
+  .meter-fill.warn { background: var(--status-warn); }
+  .meter-fill.crit { background: var(--status-offline); }
+  .meter-sub { font-size: 0.6rem; color: var(--text-dim); margin-top: 0.3rem; letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+  .host.stale .meter-fill { opacity: 0.25; }
+  .host.stale .meter-value { color: var(--text-dim); }
+  .host-warning { color: var(--status-offline); }
+
+  /* Search trigger */
+  .search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 2.5rem;
+  }
+  .search-trigger:hover { border-color: var(--border-hover); background: var(--bg3); }
+  .search-trigger kbd {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Search modal */
+  .search-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+  }
+  [data-theme="light"] .search-overlay { background: rgba(0,0,0,0.3); }
+  .search-overlay.active { display: flex; }
+
+  .search-modal {
+    width: 90%;
+    max-width: 520px;
+    background: var(--bg2);
+    border: 1px solid var(--border-hover);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .search-input-wrap { display: flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+  .search-input-wrap span { color: var(--text-dim); font-size: 0.85rem; }
+  .search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  .search-input::placeholder { color: var(--text-dim); }
+  .search-results { max-height: 320px; overflow-y: auto; }
+  .search-result {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem;
+    color: var(--text);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    transition: background 0.15s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    font-family: 'DM Mono', monospace;
+    text-align: left;
+  }
+  .search-result:hover, .search-result.active { background: var(--accent-glow); }
+  .search-result-icon { font-size: 0.9rem; opacity: 0.7; width: 1.4rem; text-align: center; }
+  .search-result-info { display: flex; flex-direction: column; gap: 0.1rem; }
+  .search-result-name { color: var(--text); font-size: 0.75rem; }
+  .search-result-url { color: var(--text-dim); font-size: 0.58rem; }
+  .search-result-pin { margin-left: auto; color: var(--accent); font-size: 0.65rem; flex-shrink: 0; }
+  .search-empty { padding: 2rem 1rem; text-align: center; color: var(--text-dim); font-size: 0.7rem; }
+  .search-hints {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    flex-wrap: wrap;
+  }
+  .search-hints kbd {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    border: 1px solid var(--border);
+    padding: 1px 4px;
+    margin-right: 3px;
+    color: var(--text-muted);
+  }
+  .search-toast {
+    position: absolute;
+    bottom: 3.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 4px 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .search-toast.visible { opacity: 1; }
+
+  /* Sections */
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    padding-left: 1px;
+  }
+
+  .group-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+  }
+  .group-toggle:hover { border-color: var(--border-hover); color: var(--text-muted); }
+  .group-toggle .section-label { margin-bottom: 0; }
+  .group-toggle-icon { font-size: 0.6rem; transition: transform 0.2s ease; }
+  .group-toggle-count { font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.1em; margin-left: 0.25rem; }
+  .section.open .group-toggle-icon { transform: rotate(90deg); }
+  .section.collapsible .grid { display: none; }
+  .section.collapsible.open .grid { display: grid; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 4rem;
+  }
+
+  .card {
+    background: var(--bg);
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-glow);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .card:hover { background: var(--bg2); }
+  .card:hover::after { opacity: 1; }
+
+  .card-header { display: flex; align-items: center; gap: 0.5rem; }
+  .card-icon { font-size: 1.3rem; opacity: 0.85; }
+  .card-status {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--status-unknown);
+    margin-left: auto;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+  }
+  .card-status.online { background: var(--status-online); }
+  .card-status.offline { background: var(--status-offline); }
+
+  .card-name { font-size: 1rem; font-weight: 400; color: var(--text); letter-spacing: 0.04em; }
+  .card-desc { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.06em; line-height: 1.6; }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.25);
+    padding: 2px 6px;
+    margin-top: 0.25rem;
+    align-self: flex-start;
+  }
+  .card-url {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    margin-top: auto;
+    padding-top: 0.75rem;
+    letter-spacing: 0.08em;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .card-host { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.58rem; opacity: 0.8; }
+  .card-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .card:hover .card-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+  .card-fav {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 2;
+    background: none;
+    border: none;
+    padding: 4px;
+    font-family: inherit;
+  }
+  .card:hover .card-fav { opacity: 0.6; }
+  .card-fav:hover { opacity: 1 !important; color: var(--accent); }
+  .card-fav.is-fav { opacity: 1 !important; color: var(--accent); }
+
+  .uptime-dots { display: flex; gap: 2px; margin-top: 0.35rem; }
+  .uptime-dot { flex: 1; height: 3px; border-radius: 1px; min-width: 2px; }
+  .uptime-dot.unknown { background: var(--status-unknown); opacity: 0.2; }
+  .uptime-dot.up { background: var(--status-online); opacity: 0.5; }
+  .uptime-dot.down { background: var(--status-offline); opacity: 0.85; }
+
+  .pinned-section { display: none; margin-bottom: 0.5rem; }
+  .pinned-section.has-pins { display: block; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer span { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.12em; }
+  .footer-time, .footer-stats { font-variant-numeric: tabular-nums; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  header { animation: fadeUp 0.5s ease both; }
+  .host { animation: fadeUp 0.5s 0.05s ease both; }
+  .search-trigger { animation: fadeUp 0.5s 0.1s ease both; }
+  main { animation: fadeUp 0.5s 0.15s ease both; }
+  footer { animation: fadeUp 0.5s 0.3s ease both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    header, .host, .search-trigger, main, footer { animation: none; }
+    .status-dot { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 0 1.5rem; }
+    header { padding: 2.5rem 0 1rem; margin-bottom: 1rem; }
+    .header-top { flex-direction: row; align-items: center; gap: 0.75rem; }
+    .wordmark h1 { font-size: 1.8rem; }
+    .wordmark .tagline { display: none; }
+    .hourglass-icon { width: 1.5rem; }
+    .status-bar span { display: none; }
+    .greeting-bar { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 0.5rem; padding: 0.7rem 0; }
+    .greeting { font-size: 1.05rem; }
+    .weather-temp { font-size: 0.8rem; }
+    .weather-icon { font-size: 0.9rem; }
+    .weather-details span { font-size: 0.58rem; }
+    .weather-location { display: none; }
+    .host { padding: 0.9rem 1rem; }
+    .meters { grid-template-columns: repeat(2, 1fr); gap: 0.8rem 1rem; }
+    .search-trigger { margin-bottom: 1.5rem; }
+    .search-overlay { padding-top: 5vh; }
+    .search-hints { gap: 0.6rem; }
+    .grid { margin-bottom: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="header-top">
+      <a class="wordmark" href="/">
+        <div class="wordmark-row">
+          <canvas id="hourglass-canvas" class="hourglass-icon"></canvas>
+          <h1>dem<span>xane</span></h1>
+        </div>
+        <div class="tagline">personal infrastructure · mini-von-anter</div>
+      </a>
+      <div class="header-right">
+        <div class="header-controls">
+          <button class="theme-toggle" onclick="toggleTheme()" title="Hell/Dunkel umschalten">
+            <span id="theme-icon">light</span>
+          </button>
+          <div class="status-bar" id="status-bar">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-label">verbinde…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="greeting-bar">
+      <div class="greeting" id="greeting"></div>
+      <div class="weather" id="weather"></div>
+    </div>
+  </header>
+
+  <section class="host" id="host">
+    <div class="host-head">
+      <div class="host-title">// mac mini</div>
+      <div class="host-meta" id="host-meta"></div>
+    </div>
+    <div id="host-body"><div class="host-empty">warte auf Daten vom mini…</div></div>
+  </section>
+
+  <button class="search-trigger" onclick="openSearch()">
+    <span>&#9906;</span>
+    <span>Suche nach Services...</span>
+    <kbd>&#8984;K</kbd>
+  </button>
+
+  <main id="main"></main>
+
+  <footer>
+    <span>demxane &middot; m4 mac mini</span>
+    <span class="footer-stats" id="footer-stats"></span>
+    <span class="footer-time" id="clock"></span>
+  </footer>
+
+</div>
+
+<div class="search-overlay" id="search-overlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-modal">
+    <div class="search-input-wrap">
+      <span>&#9906;</span>
+      <input class="search-input" id="search-input" type="text" placeholder="Service suchen..." autocomplete="off">
+    </div>
+    <div class="search-results" id="search-results"></div>
+    <div class="search-hints">
+      <span><kbd>↑↓</kbd> navigieren</span>
+      <span><kbd>↵</kbd> öffnen</span>
+      <span><kbd>⌘↵</kbd> url kopieren</span>
+      <span><kbd>tab</kbd> pin/unpin</span>
+      <span><kbd>esc</kbd> schliessen</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // Daten: Dienste aus services.json, Status aus /api/status
+  // ============================================================
+  const STALE_MS = 3 * 60 * 1000;
+  const HOUR_MS = 3600000;
+  const HOST_LABEL = { mini: 'mini', cloud: 'cloud' };
+
+  const state = {
+    groups: [],
+    services: [],
+    status: null,
+    statusError: null,
+    favs: loadFavs(),
+  };
+
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const $ = (id) => document.getElementById(id);
+
+  function loadFavs() {
+    try { return JSON.parse(localStorage.getItem('demxane-favs') || '[]'); } catch { return []; }
+  }
+  function saveFavs() {
+    try { localStorage.setItem('demxane-favs', JSON.stringify(state.favs)); } catch {}
+  }
+  function groupOpen(group) {
+    try {
+      const v = localStorage.getItem('demxane-group-' + group.id);
+      if (v === '1') return true;
+      if (v === '0') return false;
+    } catch {}
+    return !!group.open;
+  }
+
+  async function loadServices() {
+    const res = await fetch('/services.json', { cache: 'no-cache' });
+    const data = await res.json();
+    state.groups = data.groups;
+    state.services = data.services;
+    renderAll();
+  }
+
+  // ============================================================
+  // Karten
+  // ============================================================
+  function cardHTML(s) {
+    const pinned = state.favs.includes(s.id);
+    const hostLabel = HOST_LABEL[s.host] || '';
+    const shownUrl = s.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    let dots = '';
+    for (let i = 0; i < 24; i++) dots += '<span class="uptime-dot unknown"></span>';
+    return (
+      '<a class="card" href="' + esc(s.url) + '" target="_blank" rel="noopener" data-service="' + esc(s.id) + '">' +
+        '<div class="card-header"><span class="card-icon">' + esc(s.icon || '·') + '</span><div class="card-status" title="prüfe…"></div></div>' +
+        '<div class="card-name">' + esc(s.name) + '</div>' +
+        '<div class="card-desc">' + esc(s.desc || '') + '</div>' +
+        (s.tag ? '<div class="card-tag">' + esc(s.tag) + '</div>' : '') +
+        '<div class="uptime-dots">' + dots + '</div>' +
+        '<div class="card-url"><span>' + esc(shownUrl) + '</span><span class="card-host">' + esc(hostLabel) + '</span></div>' +
+        '<span class="card-arrow">&#8599;</span>' +
+        '<button class="card-fav' + (pinned ? ' is-fav' : '') + '" data-fav="' + esc(s.id) + '" title="' + (pinned ? 'Loslösen' : 'Anpinnen') + '">' + (pinned ? '&#9733;' : '&#9734;') + '</button>' +
+      '</a>'
+    );
+  }
+
+  function renderAll() {
+    const main = $('main');
+    let html = '';
+
+    const pinnedServices = state.favs.map((id) => state.services.find((s) => s.id === id)).filter(Boolean);
+    html += '<div class="section pinned-section' + (pinnedServices.length ? ' has-pins' : '') + '" id="pinned-section">' +
+      '<div class="section-label">// pinned</div>' +
+      '<div class="grid">' + pinnedServices.map(cardHTML).join('') + '</div></div>';
+
+    for (const g of state.groups) {
+      const items = state.services.filter((s) => s.group === g.id);
+      if (!items.length) continue;
+      const collapsible = !g.open;
+      const open = groupOpen(g);
+      html += '<div class="section' + (collapsible ? ' collapsible' : '') + (open ? ' open' : '') + '" data-group="' + esc(g.id) + '">';
+      if (collapsible) {
+        html += '<button class="group-toggle" data-toggle="' + esc(g.id) + '">' +
+          '<span class="group-toggle-icon">&#9656;</span>' +
+          '<span class="section-label">// ' + esc(g.label) + '</span>' +
+          '<span class="group-toggle-count">' + items.length + '</span></button>';
+      } else {
+        html += '<div class="section-label">// ' + esc(g.label) + '</div>';
+      }
+      html += '<div class="grid">' + items.map(cardHTML).join('') + '</div></div>';
+    }
+
+    main.innerHTML = html;
+    applyStatus();
+  }
+
+  document.addEventListener('click', (e) => {
+    const fav = e.target.closest('[data-fav]');
+    if (fav) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleFav(fav.dataset.fav);
+      return;
+    }
+    const toggle = e.target.closest('[data-toggle]');
+    if (toggle) {
+      const section = toggle.closest('.section');
+      const open = !section.classList.contains('open');
+      section.classList.toggle('open', open);
+      try { localStorage.setItem('demxane-group-' + toggle.dataset.toggle, open ? '1' : '0'); } catch {}
+    }
+  });
+
+  function toggleFav(id) {
+    const wasPinned = state.favs.includes(id);
+    state.favs = wasPinned ? state.favs.filter((f) => f !== id) : [...state.favs, id];
+    saveFavs();
+    renderAll();
+    return !wasPinned;
+  }
+
+  // ============================================================
+  // Status (Dienste, Verlauf, Mini)
+  // ============================================================
+  async function refreshStatus() {
+    try {
+      const res = await fetch('/api/status', { cache: 'no-store' });
+      const type = res.headers.get('content-type') || '';
+      if (!res.ok || !type.includes('json')) throw new Error(res.redirected ? 'Anmeldung abgelaufen' : 'Status ' + res.status);
+      state.status = await res.json();
+      state.statusError = null;
+    } catch (err) {
+      state.statusError = err;
+    }
+    applyStatus();
+  }
+
+  function applyStatus() {
+    const st = state.status;
+    const services = st && st.services ? st.services.items : {};
+    const history = (st && st.history) || {};
+    const currentSlot = Math.floor(Date.now() / HOUR_MS);
+
+    document.querySelectorAll('.card[data-service]').forEach((card) => {
+      const id = card.dataset.service;
+      const svc = services[id];
+      const dot = card.querySelector('.card-status');
+      if (svc) {
+        dot.className = 'card-status ' + (svc.online ? 'online' : 'offline');
+        dot.title = (svc.online ? 'Erreichbar' : 'Nicht erreichbar') +
+          (svc.code ? ' · HTTP ' + svc.code : '') +
+          (svc.detail ? ' · ' + svc.detail : '') +
+          (svc.ms != null ? ' · ' + svc.ms + ' ms' : '') +
+          (!svc.online && svc.lastSeen ? ' · zuletzt gesehen ' + formatTime(svc.lastSeen) : '');
+      } else {
+        dot.className = 'card-status';
+        dot.title = state.statusError ? 'Status nicht verfügbar' : 'prüfe…';
+      }
+
+      const entries = history[id] || [];
+      const map = {};
+      entries.forEach((e) => { map[e.t] = e.s; });
+      const dots = card.querySelectorAll('.uptime-dot');
+      dots.forEach((d, i) => {
+        const slot = currentSlot - 23 + i;
+        const s = map[slot];
+        d.className = 'uptime-dot ' + (s === undefined ? 'unknown' : s ? 'up' : 'down');
+        d.title = (i === 23 ? 'jetzt' : (23 - i) + 'h') + (s === undefined ? '' : s ? ' · ok' : ' · gestört');
+      });
+    });
+
+    renderHost(st ? st.host : null);
+    renderStatusBar();
+    updateFooterStats();
+  }
+
+  function renderStatusBar() {
+    const dot = $('status-dot');
+    const label = $('status-label');
+    const st = state.status;
+    if (state.statusError && !st) {
+      dot.className = 'status-dot offline';
+      label.textContent = state.statusError.message === 'Anmeldung abgelaufen' ? 'anmeldung abgelaufen – neu laden' : 'status nicht verfügbar';
+      return;
+    }
+    const host = st && st.host;
+    const age = host ? Date.now() - Date.parse(host.receivedAt) : Infinity;
+    if (host && age < STALE_MS) {
+      dot.className = 'status-dot online';
+      label.textContent = 'mac mini online';
+    } else if (host) {
+      dot.className = 'status-dot offline';
+      label.textContent = 'mac mini meldet sich nicht';
+    } else {
+      dot.className = 'status-dot';
+      label.textContent = 'mac mini · keine daten';
+    }
+  }
+
+  function updateFooterStats() {
+    const services = state.status && state.status.services ? state.status.services.items : {};
+    const total = state.services.length;
+    const online = state.services.filter((s) => services[s.id] && services[s.id].online).length;
+    const checked = Object.keys(services).length;
+    $('footer-stats').textContent = (checked ? online + '/' + total + ' online' : total + ' services') + ' · ' + state.favs.length + ' pinned';
+  }
+
+  // --- Mac Mini Panel ---
+  const GB = 1e9;
+  const fmtGB = (b) => (b / GB).toFixed(b / GB >= 100 ? 0 : 1);
+  const fmtSize = (b) => (b >= 1e12 ? (b / 1e12).toFixed(1) + ' TB' : fmtGB(b) + ' GB');
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+  const fillClass = (p) => (p >= 90 ? ' crit' : p >= 75 ? ' warn' : '');
+
+  function meter(label, value, percent, sub) {
+    const p = Math.max(0, Math.min(100, Math.round(percent)));
+    return '<div class="meter">' +
+      '<div class="meter-top"><span>' + esc(label) + '</span><span class="meter-value">' + esc(value) + '</span></div>' +
+      '<div class="meter-bar"><div class="meter-fill' + fillClass(p) + '" style="width:' + p + '%"></div></div>' +
+      (sub ? '<div class="meter-sub">' + esc(sub) + '</div>' : '') +
+      '</div>';
+  }
+
+  function formatAge(ms) {
+    if (ms < 90 * 1000) return 'gerade eben';
+    const min = Math.round(ms / 60000);
+    if (min < 120) return 'vor ' + min + ' min';
+    const h = Math.round(min / 60);
+    if (h < 48) return 'vor ' + h + ' h';
+    return 'vor ' + Math.round(h / 24) + ' tagen';
+  }
+
+  function formatUptime(sec) {
+    if (sec == null) return '';
+    const d = Math.floor(sec / 86400);
+    const h = Math.floor((sec % 86400) / 3600);
+    return d > 0 ? d + ' tage ' + h + ' h' : h + ' h';
+  }
+
+  function formatTime(iso) {
+    const d = new Date(iso);
+    return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+
+  function renderHost(host) {
+    const panel = $('host');
+    const meta = $('host-meta');
+    const body = $('host-body');
+    if (!host) {
+      panel.classList.remove('stale');
+      meta.innerHTML = '';
+      body.innerHTML = '<div class="host-empty">' + (state.statusError ? 'status nicht verfügbar' : 'noch keine daten vom mini') + '</div>';
+      return;
+    }
+
+    const age = Date.now() - Date.parse(host.receivedAt);
+    const stale = !(age < STALE_MS);
+    panel.classList.toggle('stale', stale);
+
+    const docker = host.docker || {};
+    const top = (docker.top || []).find((c) => c.cpu >= 5);
+    meta.innerHTML =
+      '<span' + (stale ? ' class="host-warning"' : '') + '>stand <b>' + esc(formatAge(age)) + '</b></span>' +
+      (host.uptimeSec != null ? '<span>läuft seit <b>' + esc(formatUptime(host.uptimeSec)) + '</b></span>' : '') +
+      (docker.total != null ? '<span>container <b>' + docker.running + '/' + docker.total + '</b></span>' : '') +
+      (top ? '<span>aktiv <b>' + esc(top.name) + ' ' + Math.round(top.cpu) + '%</b></span>' : '') +
+      ('plexLocal' in host ? '<span>plex <b>' + (host.plexLocal ? 'läuft' : 'aus') + '</b></span>' : '');
+
+    let html = '';
+    const cpu = host.cpu ? Math.max(0, 100 - host.cpu.idle) : null;
+    if (cpu != null) {
+      html += meter('cpu', Math.round(cpu) + '%', cpu, host.load ? 'last ' + host.load.map((l) => l.toFixed(1)).join(' · ') : '');
+    }
+    if (host.mem && host.mem.totalBytes) {
+      const m = host.mem;
+      const used = (m.activeBytes || 0) + (m.wiredBytes || 0) + (m.compressedBytes || 0);
+      const pressure = m.freePct != null ? 100 - m.freePct : pct(used, m.totalBytes);
+      html += meter('ram', fmtGB(used) + ' / ' + fmtGB(m.totalBytes) + ' GB', pressure,
+        'druck ' + pressure + '% · ' + fmtGB(m.inactiveBytes || 0) + ' GB inaktiv');
+    }
+    if (host.swap && host.swap.totalBytes) {
+      html += meter('swap', fmtGB(host.swap.usedBytes) + ' / ' + fmtGB(host.swap.totalBytes) + ' GB', pct(host.swap.usedBytes, host.swap.totalBytes), 'ausgelagert');
+    }
+    for (const d of host.disks || []) {
+      if (d.missing) {
+        html += meter(d.label.toLowerCase(), 'fehlt', 100, 'nicht eingehängt');
+        continue;
+      }
+      const p = pct(d.usedBytes, d.totalBytes);
+      html += meter(d.label.toLowerCase(), p + '%', p, fmtSize(d.usedBytes) + ' von ' + fmtSize(d.totalBytes));
+    }
+    body.innerHTML = '<div class="meters">' + html + '</div>';
+  }
+
+  // ============================================================
+  // Uhr, Begrüssung, Wetter, Theme
+  // ============================================================
+  function updateClock() {
+    const now = new Date();
+    $('clock').textContent =
+      String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0') + ' · CH/SG';
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  function updateGreeting() {
+    const h = new Date().getHours();
+    let greet;
+    if (h < 5) greet = 'Gute Nacht';
+    else if (h < 10) greet = 'Guten Morgen';
+    else if (h < 17) greet = 'Guten Tag';
+    else if (h < 22) greet = 'Guten Abend';
+    else greet = 'Gute Nacht';
+    $('greeting').innerHTML = greet + ', <strong>Anter</strong>';
+  }
+  updateGreeting();
+  setInterval(updateGreeting, 60000);
+
+  async function loadWeather() {
+    try {
+      const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=47.4245&longitude=9.3767&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe/Zurich');
+      const data = await res.json();
+      const temp = Math.round(data.current.temperature_2m);
+      const code = data.current.weather_code;
+      const wind = Math.round(data.current.wind_speed_10m);
+      const icons = { 0: '&#9788;', 1: '&#9788;', 2: '&#9925;', 3: '&#9729;', 45: '&#9729;', 48: '&#9729;', 51: '&#9730;', 53: '&#9730;', 55: '&#9730;', 61: '&#9730;', 63: '&#9748;', 65: '&#9748;', 71: '&#10052;', 73: '&#10052;', 75: '&#10052;', 80: '&#9748;', 81: '&#9748;', 82: '&#9748;', 95: '&#9889;', 96: '&#9889;', 99: '&#9889;' };
+      const descriptions = { 0: 'Klar', 1: 'Überwiegend klar', 2: 'Teilweise bewölkt', 3: 'Bewölkt', 45: 'Nebel', 48: 'Nebel', 51: 'Nieselregen', 53: 'Nieselregen', 55: 'Nieselregen', 61: 'Leichter Regen', 63: 'Regen', 65: 'Starker Regen', 71: 'Leichter Schnee', 73: 'Schnee', 75: 'Starker Schnee', 80: 'Regenschauer', 81: 'Regenschauer', 82: 'Starker Schauer', 95: 'Gewitter', 96: 'Gewitter', 99: 'Gewitter' };
+      $('weather').innerHTML =
+        '<span class="weather-icon">' + (icons[code] || '&#9729;') + '</span>' +
+        '<span class="weather-temp">' + temp + '°</span>' +
+        '<div class="weather-details"><span>' + (descriptions[code] || '') + ' · ' + wind + ' km/h</span><span class="weather-location">St. Gallen</span></div>';
+    } catch {
+      $('weather').innerHTML = '<span class="weather-location">wetter nicht verfügbar</span>';
+    }
+  }
+  loadWeather();
+  setInterval(loadWeather, 600000);
+
+  function getAutoTheme() {
+    const h = new Date().getHours();
+    return (h >= 6 && h < 20) ? 'light' : 'dark';
+  }
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      $('theme-icon').textContent = 'dark';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      $('theme-icon').textContent = 'light';
+    }
+  }
+  function toggleTheme() {
+    const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    try { localStorage.setItem('theme-override', next); } catch {}
+    applyTheme(next);
+  }
+  (function initTheme() {
+    let override = null;
+    try { override = localStorage.getItem('theme-override'); } catch {}
+    applyTheme(override || getAutoTheme());
+  })();
+  setInterval(() => {
+    let override = null;
+    try { override = localStorage.getItem('theme-override'); } catch {}
+    if (override && override !== getAutoTheme()) return;
+    try { localStorage.removeItem('theme-override'); } catch {}
+    applyTheme(getAutoTheme());
+  }, 60000);
+
+  // ============================================================
+  // Suche (Cmd+K)
+  // ============================================================
+  let activeResultIdx = -1;
+
+  function openSearch() {
+    $('search-overlay').classList.add('active');
+    const input = $('search-input');
+    input.value = '';
+    input.focus();
+    activeResultIdx = -1;
+    renderSearchResults('');
+  }
+  function closeSearch() { $('search-overlay').classList.remove('active'); }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); return; }
+    if (e.key === 'Escape') { closeSearch(); return; }
+    if (!$('search-overlay').classList.contains('active')) return;
+
+    const results = document.querySelectorAll('.search-result');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeResultIdx = Math.min(activeResultIdx + 1, results.length - 1);
+      results.forEach((r, i) => r.classList.toggle('active', i === activeResultIdx));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeResultIdx = Math.max(activeResultIdx - 1, 0);
+      results.forEach((r, i) => r.classList.toggle('active', i === activeResultIdx));
+    } else if (e.key === 'Enter' && activeResultIdx >= 0 && results[activeResultIdx]) {
+      e.preventDefault();
+      const url = results[activeResultIdx].dataset.url;
+      if (e.metaKey || e.ctrlKey) {
+        navigator.clipboard.writeText(url).then(() => showSearchToast('URL kopiert'));
+      } else {
+        window.open(url, '_blank');
+        closeSearch();
+      }
+    } else if (e.key === 'Tab' && activeResultIdx >= 0 && results[activeResultIdx]) {
+      e.preventDefault();
+      const pinnedNow = toggleFav(results[activeResultIdx].dataset.id);
+      showSearchToast(pinnedNow ? 'Pinned' : 'Unpinned');
+      renderSearchResults($('search-input').value);
+      const fresh = document.querySelectorAll('.search-result');
+      if (fresh[activeResultIdx]) fresh[activeResultIdx].classList.add('active');
+    }
+  });
+
+  $('search-input').addEventListener('input', (e) => {
+    activeResultIdx = -1;
+    renderSearchResults(e.target.value);
+  });
+
+  function renderSearchResults(query) {
+    const container = $('search-results');
+    const q = query.toLowerCase().trim();
+    const filtered = q
+      ? state.services.filter((s) => s.name.toLowerCase().includes(q) || s.id.includes(q) || s.url.toLowerCase().includes(q) || (s.desc || '').toLowerCase().includes(q))
+      : state.services;
+
+    if (!filtered.length) {
+      container.innerHTML = '<div class="search-empty">Kein Service gefunden</div>';
+      return;
+    }
+    container.innerHTML = filtered.map((s) => {
+      const pinned = state.favs.includes(s.id);
+      return '<button class="search-result" data-url="' + esc(s.url) + '" data-id="' + esc(s.id) + '">' +
+        '<span class="search-result-icon">' + esc(s.icon || '·') + '</span>' +
+        '<div class="search-result-info"><span class="search-result-name">' + esc(s.name) + '</span>' +
+        '<span class="search-result-url">' + esc(s.url.replace(/^https?:\/\//, '')) + '</span></div>' +
+        (pinned ? '<span class="search-result-pin">&#9733;</span>' : '') +
+        '</button>';
+    }).join('');
+    container.querySelectorAll('.search-result').forEach((btn) => {
+      btn.addEventListener('click', () => { window.open(btn.dataset.url, '_blank'); closeSearch(); });
+    });
+  }
+
+  function showSearchToast(msg) {
+    const modal = document.querySelector('.search-modal');
+    let toast = modal.querySelector('.search-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'search-toast';
+      modal.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('visible'), 1200);
+  }
+
+  // ============================================================
+  // Start
+  // ============================================================
+  loadServices().then(refreshStatus).catch((err) => {
+    $('main').innerHTML = '<div class="host-empty">services.json konnte nicht geladen werden: ' + esc(err.message) + '</div>';
+  });
+  setInterval(refreshStatus, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshStatus(); });
+
+  // ============================================================
+  // Sanduhr
+  // ============================================================
+  (function() {
+    const canvas = $('hourglass-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const S = 3;
+    canvas.width = 40 * S;
+    canvas.height = 56 * S;
+
+    const CX = 20, TOP_Y = 5, BOT_Y = 51;
+    const NECK_TOP = 26, NECK_BOT = 30, NECK_MID = 28;
+    const EDGE_L = 6, EDGE_R = 34;
+    const TOTAL = 60;
+    const GRAVITY = 150;
+    const FLIP_DUR = 1.0;
+
+    function edgesAt(y) {
+      if (y <= TOP_Y) return { l: EDGE_L, r: EDGE_R };
+      if (y >= BOT_Y) return { l: EDGE_L, r: EDGE_R };
+      if (y < NECK_TOP) {
+        const t = (y - TOP_Y) / (NECK_TOP - TOP_Y);
+        return { l: EDGE_L + (CX - EDGE_L) * t, r: EDGE_R - (EDGE_R - CX) * t };
+      }
+      if (y > NECK_BOT) {
+        const t = (y - NECK_BOT) / (BOT_Y - NECK_BOT);
+        return { l: CX - (CX - EDGE_L) * t, r: CX + (EDGE_R - CX) * t };
+      }
+      return { l: CX - 0.5, r: CX + 0.5 };
+    }
+
+    let settled = 0, grains = [], nextGrainTime = 0;
+    let t0 = performance.now(), prevTime = t0;
+    let flipping = false, flipT0 = 0;
+
+    function topSurfaceY() {
+      const f = Math.max(0, 1 - settled / TOTAL);
+      return NECK_TOP - Math.sqrt(f) * (NECK_TOP - TOP_Y);
+    }
+    function pileTopY() {
+      const f = Math.max(0, settled / TOTAL);
+      return BOT_Y - Math.sqrt(f) * (BOT_Y - NECK_BOT);
+    }
+    function getColors() {
+      const s = getComputedStyle(document.documentElement);
+      return {
+        text: s.getPropertyValue('--text').trim() || '#e8e4dd',
+        accent: s.getPropertyValue('--accent').trim() || '#c8a96e'
+      };
+    }
+    function rrect(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+      ctx.fill();
+    }
+    function drawFrame(c) {
+      ctx.fillStyle = c.text;
+      ctx.globalAlpha = 0.9;
+      rrect(2*S, 1*S, 36*S, 4*S, 2*S);
+      rrect(2*S, 51*S, 36*S, 4*S, 2*S);
+      ctx.strokeStyle = c.text;
+      ctx.globalAlpha = 0.8;
+      ctx.lineWidth = 2.5 * S;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(EDGE_L*S, TOP_Y*S); ctx.lineTo(CX*S, NECK_TOP*S); ctx.lineTo(EDGE_R*S, TOP_Y*S);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(EDGE_L*S, BOT_Y*S); ctx.lineTo(CX*S, NECK_BOT*S); ctx.lineTo(EDGE_R*S, BOT_Y*S);
+      ctx.stroke();
+    }
+    function drawSandRegion(yTop, yBot, color, alpha, convex) {
+      if (yTop >= yBot - 0.5) return;
+      const eT = edgesAt(yTop);
+      const eB = edgesAt(yBot);
+      ctx.fillStyle = color;
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      if (convex) {
+        ctx.moveTo(eT.l * S, yTop * S);
+        ctx.quadraticCurveTo(CX * S, (yTop - 1.5) * S, eT.r * S, yTop * S);
+      } else {
+        ctx.moveTo(eT.l * S, yTop * S);
+        ctx.quadraticCurveTo(CX * S, (yTop + 2) * S, eT.r * S, yTop * S);
+      }
+      ctx.lineTo(eB.r * S, yBot * S);
+      ctx.lineTo(eB.l * S, yBot * S);
+      ctx.closePath();
+      ctx.fill();
+    }
+    function frame(now) {
+      const dt = Math.min((now - prevTime) / 1000, 0.1);
+      prevTime = now;
+      const elapsed = (now - t0) / 1000;
+      const c = getColors();
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+
+      if (flipping) {
+        const ft = (now - flipT0) / 1000;
+        if (ft >= FLIP_DUR) {
+          flipping = false;
+          canvas.style.transform = '';
+          settled = 0; grains = []; nextGrainTime = 0;
+          t0 = now; prevTime = now;
+        } else {
+          const t = ft / FLIP_DUR;
+          const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2) / 2;
+          canvas.style.transform = 'rotate(' + (ease * 180) + 'deg)';
+        }
+      }
+
+      drawFrame(c);
+
+      if (flipping) {
+        drawSandRegion(NECK_BOT + 0.5, BOT_Y - 0.5, c.accent, 0.65, true);
+      } else {
+        while (elapsed >= nextGrainTime && settled + grains.length < TOTAL) {
+          grains.push({ y: NECK_MID, vy: 0 });
+          nextGrainTime += 1;
+        }
+        const py = pileTopY();
+        for (let i = grains.length - 1; i >= 0; i--) {
+          const g = grains[i];
+          g.vy += GRAVITY * dt;
+          g.y += g.vy * dt;
+          if (g.y >= py - 0.3) { settled++; grains.splice(i, 1); }
+        }
+        const sy = topSurfaceY();
+        if (sy < NECK_TOP - 1) drawSandRegion(sy + 0.5, NECK_TOP - 0.5, c.accent, 0.3, false);
+        if (settled > 0) drawSandRegion(pileTopY(), BOT_Y - 0.5, c.accent, 0.65, true);
+        if (settled < TOTAL) {
+          ctx.strokeStyle = c.accent;
+          ctx.globalAlpha = 0.45;
+          ctx.lineWidth = 1.0 * S;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(CX*S, (NECK_TOP - 0.5)*S);
+          ctx.lineTo(CX*S, (NECK_BOT + 1)*S);
+          ctx.stroke();
+        }
+        for (const g of grains) {
+          ctx.fillStyle = c.accent;
+          ctx.globalAlpha = 0.9;
+          ctx.beginPath();
+          ctx.arc(CX * S, g.y * S, 1.3 * S, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (settled >= TOTAL && grains.length === 0) {
+          flipping = true;
+          flipT0 = performance.now();
+        }
+      }
+      ctx.restore();
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>
+</body>
+</html>

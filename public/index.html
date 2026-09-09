@@ -833,9 +833,10 @@
   }
 
   // --- Mac Mini Panel ---
-  const GB = 1e9;
-  const fmtGB = (b) => (b / GB).toFixed(b / GB >= 100 ? 0 : 1);
-  const fmtSize = (b) => (b >= 1e12 ? (b / 1e12).toFixed(1) + ' TB' : fmtGB(b) + ' GB');
+  // RAM/Swap wie macOS in binären GB (16 GB), Platten wie der Finder in dezimalen TB/GB.
+  const GIB = 1073741824;
+  const fmtGB = (b) => (b / GIB).toFixed(b / GIB >= 100 ? 0 : 1);
+  const fmtSize = (b) => (b >= 1e12 ? (b / 1e12).toFixed(1) + ' TB' : (b / 1e9).toFixed(b / 1e9 >= 100 ? 0 : 1) + ' GB');
   const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
   const fillClass = (p) => (p >= 90 ? ' crit' : p >= 75 ? ' warn' : '');
 
